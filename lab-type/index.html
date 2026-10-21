@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>方曦 FANGXI · GEO 品牌监测</title>
+<meta name="description" content="方曦把消费者选购时会问的问题，逐一提给主流 AI，留下原始回答和引用来源，标出你被提到、被漏掉、被说错的每一处。">
+<script>
+(function(){var h=document.documentElement;if(/[?&]static\b/.test(location.search))h.classList.add('static');
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)h.classList.add('rm');h.classList.add('js');})();
+</script>
+<style>
+:root{
+  --paper:#f4f4f1; --paper2:#ebebe6; --card:#f9f9f7; --ink:#0b0b0c; --ink2:#2a2a2c; --mute:#6b6b68; --mute2:#9a9a95;
+  --line:rgba(11,11,12,.14); --line2:rgba(11,11,12,.32);
+  --red:#ee2b1d; --orange:#ff7a1a; --foot:#070707; --lime:#d6ff00;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:"SF Mono",Menlo,Consolas,monospace;
+  --latin:"Helvetica Neue",Arial,var(--sans);
+  --fx:30px; --pad:48px;
+  --ease:cubic-bezier(.2,.8,.1,1);
+}
+*{box-sizing:border-box}
+html{background:var(--paper);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html.rm{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:600;text-wrap:balance;letter-spacing:-.02em}
+p{margin:0;text-wrap:pretty}
+.nw{white-space:nowrap}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.hud{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+::selection{background:var(--ink);color:var(--lime)}
+
+/* ---------- reveal language: de-blur + rise, hairlines draw ---------- */
+.js .reveal{opacity:0;filter:blur(8px);transform:translateY(14px);transition:opacity .9s var(--ease),filter .9s var(--ease),transform .9s var(--ease)}
+.js .reveal.in{opacity:1;filter:none;transform:none}
+.js .hl{transform:scaleX(0);transform-origin:left center;transition:transform 1.3s var(--ease)}
+.js .hl.v{transform:scaleY(0);transform-origin:center top}
+.js .in .hl,.js .hl.in{transform:none}
+.static .reveal,.rm .reveal{opacity:1!important;filter:none!important;transform:none!important;transition:none!important}
+.static .hl,.rm .hl{transform:none!important;transition:none!important}
+.static *,.rm *{transition:none!important}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;height:96px;pointer-events:none;transition:height .4s var(--ease),background .4s}
+.nav>*{pointer-events:auto}
+.nav::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);opacity:0;transition:opacity .4s}
+.nav.scrolled{height:64px;background:rgba(244,244,241,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.nav.scrolled::after{opacity:1}
+.notch{position:absolute;left:0;top:0;width:100%;height:96px;pointer-events:none;transition:opacity .4s}
+.nav.scrolled .notch{opacity:0}
+.notch path{fill:none;stroke:var(--line2);stroke-width:1}
+.brand{position:absolute;left:var(--fx);top:30px;display:flex;align-items:center;gap:14px;height:28px;transition:top .4s var(--ease)}
+.nav.scrolled .brand{top:18px}
+.brand .bx{width:28px;height:28px;border:1px solid var(--ink);display:grid;place-items:center;font-size:12px;font-weight:600;position:relative}
+.brand .bx::after{content:"";position:absolute;left:5px;right:5px;bottom:5px;height:2px;background:var(--ink)}
+.brand b{font-weight:500;font-size:21px;letter-spacing:-.01em}
+.brand .hud{color:var(--ink2);margin-left:2px}
+.mark{position:absolute;left:50%;top:14px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;transition:top .4s var(--ease)}
+.nav.scrolled .mark{top:14px}
+.mark .gword svg{display:block;fill:var(--ink)}
+.mark .gword{display:flex;gap:0}
+.pill{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;padding:2px 9px 1px;border:1px solid var(--line2);border-radius:20px;background:var(--paper);line-height:1.5}
+.mark .star{width:9px;height:9px;fill:var(--ink);transition:opacity .3s}
+.nav.scrolled .mark .star{opacity:0}
+.links{position:absolute;right:var(--fx);top:28px;display:flex;align-items:center;transition:top .4s var(--ease)}
+.nav.scrolled .links{top:16px}
+.links a{position:relative;font-size:13px;padding:6px 16px;line-height:20px;color:var(--ink2)}
+.links a+a{border-left:1px solid var(--line2)}
+.links a::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+.links a:hover{color:var(--ink)}
+.links a:hover::after{transform:none}
+.burger{display:none;position:absolute;right:10px;top:12px;width:44px;height:44px;place-items:center}
+.burger i{position:absolute;left:12px;right:12px;height:1.5px;background:var(--ink);transition:transform .3s var(--ease)}
+.burger i:first-child{top:17px}.burger i:last-child{top:25px}
+.nav.open .burger i:first-child{transform:translateY(4px) rotate(45deg)}
+.nav.open .burger i:last-child{transform:translateY(-4px) rotate(-45deg)}
+.menu{display:none}
+
+/* ---------- hero ---------- */
+.hero{position:relative;height:max(820px,100vh);min-height:820px;overflow:hidden;--r1:150px;--r2:322px;--r3:530px;--S:min(600px,43vw);--ex:62.5%;--ey:55%}
+.static .hero{height:940px;min-height:940px}
+.frame{position:absolute;inset:0;pointer-events:none}
+.frame i{position:absolute;background:var(--line);display:block}
+.frame .h{height:1px}
+.frame .v{width:1px}
+.tick{position:absolute;width:9px;height:9px;transform:translate(-4px,-4px);pointer-events:none}
+.tick::before,.tick::after{content:"";position:absolute;background:var(--ink)}
+.tick::before{left:4px;top:0;width:1px;height:9px}
+.tick::after{top:4px;left:0;height:1px;width:9px}
+.statement{position:absolute;left:calc(var(--fx) + 34px);top:calc(var(--r1) + 34px);max-width:520px;z-index:4}
+.statement .hud{margin-bottom:14px;display:flex;gap:14px}
+.statement h1{font-size:38px;line-height:1.08;letter-spacing:-.035em;font-weight:600}
+.statement h1 .in1{padding-left:1.4em}
+.plat{position:absolute;right:calc(var(--fx) + 20px);top:calc(var(--r1) + 40px);display:flex;align-items:center;gap:18px;z-index:4}
+.chips{display:flex}
+.chip{width:46px;height:46px;border-radius:50%;margin-left:-12px;display:grid;place-items:center;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:#f4f4f1;background:radial-gradient(circle at 34% 28%,#8d8d8a 0,#3a3a3c 32%,#0d0d0e 70%);box-shadow:0 0 0 2px var(--paper),inset 0 -6px 10px rgba(255,122,26,.18);transition:transform .35s var(--ease)}
+.chip:first-child{margin-left:0}
+.chips:hover .chip{transform:translateX(calc(var(--i)*4px))}
+.plat .num{font-family:var(--latin);font-size:48px;font-weight:300;letter-spacing:-.04em;line-height:1}
+.plat .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;line-height:1.7;margin-top:4px}
+.rail-l{position:absolute;left:var(--fx);top:var(--r2);width:114px;height:calc(var(--r3) - var(--r2));display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:30px 0 34px;z-index:4}
+.rail-l .hud{font-size:10px;color:var(--mute2)}
+.down{position:relative;width:44px;height:44px;display:grid;place-items:center}
+.down span{width:16px;height:16px;display:block;position:relative}
+.down span::before{content:"";position:absolute;left:7.5px;top:0;width:1px;height:15px;background:var(--ink);transition:transform .4s var(--ease)}
+.down span::after{content:"";position:absolute;left:3px;bottom:1px;width:9px;height:9px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);transform:rotate(45deg) translate(-2px,-2px)}
+.down:hover span{transform:translateY(3px);transition:transform .3s}
+.down i{position:absolute;width:2px;height:2px;background:var(--ink)}
+.down i:nth-child(2){left:6px;top:6px}.down i:nth-child(3){right:6px;top:6px}.down i:nth-child(4){left:6px;bottom:6px}.down i:nth-child(5){right:6px;bottom:6px}
+.tile{position:absolute;left:calc(var(--fx) + 114px);top:var(--r2);width:104px;height:104px;background:var(--ink);z-index:4;display:grid;place-items:center}
+.tile::before,.tile::after{content:"";position:absolute;width:6px;height:6px;border:1px solid #fff}
+.tile::before{left:7px;top:7px;border-right:0;border-bottom:0;box-shadow:78px 78px 0 -10px transparent}
+.tile::after{right:7px;bottom:7px;border-left:0;border-top:0}
+.tile .c2,.tile .c3{position:absolute;width:6px;height:6px;border:1px solid #fff}
+.tile .c2{right:7px;top:7px;border-left:0;border-bottom:0}.tile .c3{left:7px;bottom:7px;border-right:0;border-top:0}
+.tile svg{width:62px;height:62px;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rm .tile svg{animation:none}
+.tile-cap{position:absolute;left:calc(var(--fx) + 126px);top:calc(var(--r2) + 118px);width:200px;z-index:4;line-height:1.7}
+.tile-cap b{display:block;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink);letter-spacing:0;text-transform:none}
+.intro{position:absolute;left:calc(var(--fx) + 342px);top:calc(var(--r2) + 26px);width:230px;z-index:4}
+.intro p{font-size:13.5px;line-height:1.75;color:var(--ink2)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 18px;background:var(--ink);color:var(--paper);font-size:13.5px;font-weight:500;transition:background .3s,color .3s}
+.btn .ar{width:14px;height:1px;background:currentColor;position:relative;transition:width .35s var(--ease)}
+.btn .ar::after{content:"";position:absolute;right:0;top:-3px;width:6px;height:6px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
+.btn:hover{background:var(--red)}
+.btn:hover .ar{width:22px}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line2)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--red);color:var(--red);background:transparent}
+.rail-r{position:absolute;right:var(--fx);top:var(--r2);width:123px;list-style:none;margin:0;padding:44px 0 0 28px;z-index:4}
+.rail-r .hud{font-size:9.5px;margin-bottom:16px;color:var(--mute2)}
+.rail-r li{position:relative;font-size:11.5px;line-height:34px;color:var(--mute2);font-family:var(--latin);transition:color .4s}
+.rail-r li::before{content:"";position:absolute;left:-12px;top:9px;width:1px;height:16px;background:var(--ink);transform:scaleY(0);transition:transform .4s var(--ease)}
+.rail-r li.on{color:var(--ink)}
+.rail-r li.on::before{transform:none}
+.eye-wrap{position:absolute;left:var(--ex);top:var(--ey);width:var(--S);height:var(--S);transform:translate(-50%,-50%);z-index:3;pointer-events:none}
+#eye{position:absolute;inset:0;width:100%;height:100%;display:block}
+#eye.no-gl{background:radial-gradient(circle at 50% 50%,#ffb36b 0,#ff7a1a 6%,#3a1608 11%,#0b0b0c 16%,#151515 30%,#e9e7e2 31%,#ffffff 44%,#cfcac2 56%,rgba(244,244,241,0) 57%)}
+.dial{position:absolute;left:50%;top:50%;width:122%;height:122%;transform:translate(-50%,-50%);z-index:1;pointer-events:none;overflow:visible}
+.dial g.rot{transform-origin:0 0;animation:spin 90s linear infinite}
+.rm .dial g.rot{animation:none}
+.dial line,.dial circle{stroke:var(--ink);fill:none;vector-effect:non-scaling-stroke}
+.dial text{font-family:var(--mono);font-size:2.9px;fill:var(--mute);letter-spacing:.1em}
+.callouts{position:absolute;left:var(--ex);top:var(--ey);width:0;height:0;z-index:5;pointer-events:none}
+.co{position:absolute;display:flex;align-items:center;white-space:nowrap}
+.co .ld{height:1px;background:var(--ink);position:relative}
+.co .ld::before{content:"";position:absolute;left:-3px;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--paper);border:1px solid var(--ink)}
+.co .tx{padding-left:10px;line-height:1.35}
+.co .tx b{display:block;font-size:12.5px;font-weight:600;letter-spacing:0}
+.co .tx .hud{font-size:9.5px;color:var(--mute)}
+.hero-word{position:absolute;left:var(--pad);right:var(--pad);bottom:74px;display:flex;justify-content:space-between;z-index:2}
+.hero-word .gl{display:block;overflow:hidden;line-height:0}
+.hero-word svg{display:block;fill:var(--ink);transform:translateY(102%);transition:transform 1.25s var(--ease)}
+.ready .hero-word svg,.static .hero-word svg,.rm .hero-word svg{transform:none}
+.hero-foot{position:absolute;left:var(--fx);right:var(--fx);bottom:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;z-index:4}
+.hero-foot .hud{font-size:9.5px}
+
+/* ---------- generic section chrome ---------- */
+.wrap{position:relative;margin:0 var(--fx);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:114px 1fr auto;align-items:center;height:46px;border-top:1px solid var(--line2);border-bottom:1px solid var(--line)}
+.sec-head>*{padding:0 20px}
+.sec-head .no{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;border-right:1px solid var(--line);height:100%;display:flex;align-items:center}
+.sec-head .nm{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase}
+.sec-head .rt{font-size:12px;color:var(--mute)}
+
+/* ---------- kinetic band ---------- */
+.kin{position:relative;padding:0 0 0;overflow:hidden}
+.kin-stage{position:relative;padding:72px 0 40px;overflow:hidden}
+.kin-line{white-space:nowrap;will-change:transform;line-height:.92}
+.kin-line span{display:inline-block}
+.k1{font-size:clamp(84px,13.2vw,210px);font-weight:600;letter-spacing:-.055em}
+.k1 .sep{display:inline-block;width:.42em;height:.42em;margin:0 .34em;vertical-align:.12em}
+.k2{font-family:var(--latin);font-weight:800;font-size:clamp(56px,8.4vw,132px);letter-spacing:-.03em;color:transparent;-webkit-text-stroke:1.4px var(--ink);text-transform:uppercase;margin-top:18px}
+.k2 em{font-style:normal;color:var(--ink);-webkit-text-stroke:0}
+.k3{font-family:var(--mono);font-size:11px;letter-spacing:.3em;color:var(--mute);margin-top:22px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.step{position:relative;padding:28px 28px 34px;border-right:1px solid var(--line);min-height:210px;transition:background .4s}
+.step:last-child{border-right:0}
+.step:hover{background:var(--card)}
+.step .hud{display:flex;justify-content:space-between}
+.step h3{font-size:30px;margin:26px 0 10px;letter-spacing:-.03em}
+.step p{font-size:14px;color:var(--ink2);max-width:330px}
+.step::after{content:"";position:absolute;left:0;top:-1px;height:2px;width:0;background:var(--red);transition:width .5s var(--ease)}
+.step:hover::after{width:100%}
+
+/* ---------- business rows ---------- */
+.row{position:relative;border-top:1px solid var(--line2);scroll-margin-top:64px}
+.row-bar{display:grid;grid-template-columns:114px 1fr 1fr 1fr;height:46px;align-items:center;border-bottom:1px solid var(--line)}
+.row-bar>*{padding:0 20px;height:100%;display:flex;align-items:center;border-right:1px solid var(--line);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+.row-bar>*:last-child{border-right:0;justify-content:flex-end}
+.row-bar .on{gap:8px}
+.row-bar .on i{width:7px;height:7px;border-radius:50%;border:1px solid var(--ink);display:inline-block}
+.row-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);min-height:640px}
+.row-l{padding:40px 48px 56px 48px;border-right:1px solid var(--line);display:flex;flex-direction:column}
+.row-num{height:var(--nh,210px);display:flex;gap:0;margin-left:-4px}
+.row-num svg{display:block;fill:var(--ink)}
+.row-l .eyebrow{margin-top:36px}
+.row-l h2{font-size:clamp(38px,3.7vw,56px);line-height:1.06;letter-spacing:-.04em;margin-top:14px}
+.row-l .lead{font-size:15px;color:var(--ink2);margin-top:20px;max-width:470px}
+.spec{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--line);max-width:520px}
+.spec li{display:grid;grid-template-columns:52px 1fr;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;transition:padding .35s var(--ease)}
+.spec li .hud{padding-top:3px;color:var(--mute2)}
+.spec li:hover{padding-left:8px}
+.spec li:hover .hud{color:var(--red)}
+.row-r{position:relative;padding:40px 48px 56px;display:flex;align-items:center;justify-content:center}
+.row-r::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;background-position:-1px -1px;opacity:.45;pointer-events:none;-webkit-mask:radial-gradient(ellipse at center,#000 30%,transparent 78%);mask:radial-gradient(ellipse at center,#000 30%,transparent 78%)}
+
+/* panels */
+.panel{position:relative;margin:0;width:100%;max-width:620px;background:var(--card);border:1px solid var(--line2);box-shadow:0 30px 60px -40px rgba(11,11,12,.35);overflow:hidden}
+.panel .ph{display:flex;align-items:center;justify-content:space-between;height:38px;padding:0 14px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.12em}
+.panel .ph .tag{background:var(--ink);color:var(--paper);padding:2px 8px;letter-spacing:.1em}
+.panel .ph .dots{display:flex;gap:5px}
+.panel .ph .dots i{width:6px;height:6px;border:1px solid var(--ink);display:block}
+.panel .ph .dots i:first-child{background:var(--ink)}
+.panel .pb{padding:18px 18px 16px}
+.panel .pf{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--mute)}
+.scan{position:absolute;left:0;right:0;top:38px;height:70px;background:linear-gradient(180deg,rgba(11,11,12,0),rgba(11,11,12,.05) 80%,rgba(11,11,12,.0));border-bottom:1px solid rgba(11,11,12,.25);pointer-events:none;animation:scan 5.5s var(--ease) infinite}
+@keyframes scan{0%{transform:translateY(-80px)}60%,100%{transform:translateY(520px)}}
+.rm .scan,.static .scan{display:none}
+.corner{position:absolute;width:12px;height:12px;border:1px solid var(--ink);pointer-events:none;z-index:2}
+.corner.a{left:-1px;top:-1px;border-right:0;border-bottom:0}.corner.b{right:-1px;top:-1px;border-left:0;border-bottom:0}
+.corner.c{left:-1px;bottom:-1px;border-right:0;border-top:0}.corner.d{right:-1px;bottom:-1px;border-left:0;border-top:0}
+.q{display:flex;gap:12px;align-items:flex-start;padding-bottom:16px;border-bottom:1px dashed var(--line2)}
+.q .qk{flex:none;width:26px;height:26px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-family:var(--mono);font-size:11px}
+.q p{font-size:17px;font-weight:600;line-height:1.45;letter-spacing:-.01em}
+.q small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--mute);margin-top:4px;font-weight:400}
+.grid6{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:16px}
+.cell{background:var(--card);padding:12px 12px 12px;min-height:104px;display:flex;flex-direction:column;justify-content:space-between;transition:background .3s}
+.cell:hover{background:#fff}
+.cell .pn{font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.cell .pn .hud{font-size:9px;color:var(--mute2)}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:12px;margin-top:10px}
+.st i{width:9px;height:9px;display:inline-block;flex:none}
+.st.m i{background:var(--ink)}
+.st.o i{border:1px solid var(--ink)}
+.st.w i{background:repeating-linear-gradient(45deg,var(--ink) 0 2px,transparent 2px 4px);border:1px solid var(--ink)}
+.cell .sub{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--mute);margin-top:4px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--mute)}
+.legend .st{margin:0;font-size:11.5px}
+/* safety panel */
+.ans{font-size:14px;line-height:1.95;color:var(--ink2);padding:14px 16px;background:#fff;border:1px solid var(--line)}
+.ans .hud{display:block;margin-bottom:6px;font-size:9.5px}
+.mk{position:relative;padding:1px 4px;box-shadow:inset 0 -1px 0 var(--ink);background:rgba(11,11,12,.06)}
+.mk sup{font-family:var(--mono);font-size:9px;background:var(--ink);color:var(--paper);padding:0 4px;margin-left:3px;vertical-align:3px}
+.redact{display:inline-block;width:46px;height:12px;background:var(--ink);vertical-align:-1px}
+.flags{margin-top:14px;border-top:1px solid var(--line)}
+.flag{display:grid;grid-template-columns:28px 1.1fr 1.3fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+.flag .hud{font-size:9.5px;color:var(--ink)}
+.flag .lnk{font-family:var(--mono);font-size:10.5px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.flag .vf{font-size:11px;padding:2px 8px;border:1px solid var(--ink);white-space:nowrap}
+.retest{display:flex;align-items:center;gap:0;margin-top:14px}
+.retest span{flex:1;height:22px;border-left:1px solid var(--ink);position:relative}
+.retest span::after{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:var(--line2)}
+.retest span:last-child{flex:none;width:1px}
+.retest em{position:absolute;top:-2px;left:6px;font-style:normal;font-family:var(--mono);font-size:9px;color:var(--mute);letter-spacing:.08em;background:var(--card);padding-right:4px;z-index:1}
+/* pollux panel */
+.cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.colx .hud{display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--ink);color:var(--ink)}
+.quote{margin-top:10px;background:#fff;border:1px solid var(--line);padding:12px 12px 10px;font-size:13px;line-height:1.6;transition:transform .35s var(--ease),box-shadow .35s}
+.quote:hover{transform:translateY(-3px);box-shadow:0 14px 24px -18px rgba(11,11,12,.5)}
+.quote .tr{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--mute)}
+.quote.ghost{background:transparent;border-style:dashed;color:var(--mute2);font-size:12px}
+
+/* ---------- team spec sheet ---------- */
+.team-top{display:grid;grid-template-columns:114px 1fr 1fr;border-bottom:1px solid var(--line)}
+.team-top .side{border-right:1px solid var(--line)}
+.team-top .ttl{padding:56px 48px 48px;border-right:1px solid var(--line)}
+.team-top h2{font-size:clamp(40px,4.4vw,68px);line-height:1.04;letter-spacing:-.045em}
+.team-top .ttl p{margin-top:22px;font-size:15px;color:var(--ink2);max-width:430px}
+.sum{display:grid;grid-template-columns:1fr 1fr;align-content:stretch}
+.sum div{padding:26px 28px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between;min-height:120px}
+.sum div:nth-child(2n){border-right:0}
+.sum div:nth-last-child(-n+2){border-bottom:0}
+.sum b{font-family:var(--latin);font-weight:300;font-size:56px;letter-spacing:-.05em;line-height:1}
+.sum b.cn{font-family:var(--sans);font-weight:600;font-size:26px;letter-spacing:-.02em;line-height:1.25}
+.spec-t{width:100%;border-collapse:collapse}
+.spec-t th{font-family:var(--mono);font-size:10px;letter-spacing:.14em;font-weight:400;color:var(--mute);text-align:left;padding:14px 20px;border-bottom:1px solid var(--line2)}
+.spec-t td{padding:20px 20px;border-bottom:1px solid var(--line);font-size:14.5px;vertical-align:baseline}
+.spec-t td:first-child,.spec-t th:first-child{width:114px;border-right:1px solid var(--line)}
+.spec-t td:first-child{font-family:var(--mono);font-size:11px;color:var(--mute2);letter-spacing:.1em;position:relative}
+.spec-t td.nm{font-size:22px;font-weight:600;letter-spacing:-.01em;width:22%}
+.spec-t td.dg{font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.spec-t td.dg span{border:1px solid var(--ink);padding:2px 8px}
+.spec-t tr.d td.dg span{background:var(--ink);color:var(--paper)}
+.spec-t tbody tr{transition:background .3s}
+.spec-t tbody tr:hover{background:var(--card)}
+.spec-t tbody tr td:first-child::before{content:"";position:absolute;left:-1px;top:0;bottom:0;width:2px;background:var(--red);transform:scaleY(0);transition:transform .35s var(--ease)}
+.spec-t tbody tr:hover td:first-child::before{transform:none}
+.spec-t tbody tr:hover td:first-child{color:var(--red)}
+.team-note{display:flex;justify-content:space-between;padding:16px 20px 16px 134px;font-size:12px;color:var(--mute)}
+
+/* ---------- FAQ ---------- */
+.faq-body{display:grid;grid-template-columns:114px minmax(0,.8fr) minmax(0,1.2fr)}
+.faq-body .side{border-right:1px solid var(--line)}
+.faq-l{padding:56px 48px;border-right:1px solid var(--line)}
+.faq-l h2{font-size:clamp(40px,4.4vw,68px);line-height:1.04;letter-spacing:-.045em}
+.faq-l p{margin-top:20px;font-size:14px;color:var(--mute);max-width:320px}
+.faq-list{list-style:none;margin:0;padding:0}
+.faq-list li{border-bottom:1px solid var(--line)}
+.faq-list li:last-child{border-bottom:0}
+.qb{width:100%;display:grid;grid-template-columns:56px 1fr 44px;align-items:center;text-align:left;padding:26px 28px 26px 28px;min-height:84px}
+.qb .hud{color:var(--mute2);transition:color .3s}
+.qb .t{font-size:20px;font-weight:600;letter-spacing:-.02em}
+.qb .pm{width:28px;height:28px;border:1px solid var(--line2);position:relative;justify-self:end;transition:background .3s,border-color .3s}
+.qb .pm::before,.qb .pm::after{content:"";position:absolute;left:8px;right:8px;top:13px;height:1px;background:var(--ink);transition:transform .35s var(--ease),background .3s}
+.qb .pm::after{transform:rotate(90deg)}
+.qb:hover .hud{color:var(--red)}
+.qb:hover .pm{border-color:var(--ink)}
+.qb[aria-expanded="true"] .pm{background:var(--ink);border-color:var(--ink)}
+.qb[aria-expanded="true"] .pm::before,.qb[aria-expanded="true"] .pm::after{background:var(--paper)}
+.qb[aria-expanded="true"] .pm::after{transform:rotate(0)}
+.qa{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.qa>div{overflow:hidden}
+.qa p{padding:0 72px 28px 84px;font-size:14.5px;color:var(--ink2);max-width:680px}
+.qb[aria-expanded="true"]+.qa{grid-template-rows:1fr}
+
+/* ---------- CTA + footer (Tenlas) ---------- */
+.cta{background:#f3f3f0;text-align:center;padding:150px 24px 140px;position:relative;border-top:1px solid var(--line2)}
+.cta .hud{display:block;margin-bottom:22px}
+.cta h2{font-size:clamp(40px,5.2vw,76px);line-height:1.04;letter-spacing:-.05em;font-weight:600}
+.cta p{color:var(--mute);font-size:15px;margin:22px auto 0;max-width:460px}
+.cta .btn{margin-top:30px;background:var(--ink);color:var(--lime)}
+.cta .btn:hover{background:var(--red);color:#fff}
+.foot{background:var(--foot);color:#f2f2ee;position:relative;overflow:hidden;padding:84px var(--pad) 0}
+.foot-top{display:grid;grid-template-columns:1.25fr 2.75fr;gap:40px;position:relative;z-index:2}
+.fbrand{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:600}
+.fbrand .bx{width:26px;height:26px;background:#f2f2ee;color:var(--foot);display:grid;place-items:center;font-size:12px}
+.foot-top .tag{color:#8b8b86;font-size:13.5px;margin-top:12px}
+.sq{display:flex;gap:8px;margin-top:22px}
+.sq a{width:44px;height:44px;background:#f2f2ee;color:var(--foot);display:grid;place-items:center;font-family:var(--mono);font-size:11px;transition:background .3s}
+.sq a:hover{background:var(--lime)}
+.fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.fcols h4{margin:0 0 14px;font-family:var(--mono);font-weight:400;font-size:10px;letter-spacing:.16em;color:#6f6f6a}
+.fcols a,.fcols span{display:block;font-size:13px;line-height:2.15;color:#a9a9a3;transition:color .25s}
+.fcols a:hover{color:var(--lime)}
+.fcols .now{color:#f2f2ee}
+.fword{position:relative;margin-top:84px;height:calc(var(--wh,230px) * .74);z-index:1}
+.fword .in{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between;will-change:transform}
+.fword svg{display:block;fill:var(--lime)}
+.fbar{position:absolute;left:var(--pad);right:var(--pad);top:calc(var(--wh,230px) * -0.08 - 30px);display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:#5d5d58;z-index:2}
+
+/* ---------- ink layer ---------- */
+#ink{position:fixed;left:0;top:0;width:100vw;height:min(100vh,1800px);pointer-events:none;z-index:60;mix-blend-mode:multiply}
+
+/* ---------- tablet ---------- */
+@media (max-width:1180px){
+  .intro{width:200px}
+  .hero{--ex:64%;--S:min(560px,46vw)}
+  .co .tx b{font-size:11.5px}
+  .links a{padding:6px 11px}
+  .row-body{grid-template-columns:1fr}
+  .row-l{border-right:0;border-bottom:1px solid var(--line)}
+}
+@media (max-width:980px){
+  .links{display:none}
+  .burger{display:grid}
+  .callouts,.rail-r,.hero-foot .mid{display:none}
+}
+
+/* ---------- phone ---------- */
+@media (max-width:760px){
+  :root{--fx:0px;--pad:16px}
+  body{font-size:14.5px}
+  .nav{height:60px}
+  .nav.scrolled{height:60px}
+  .notch{display:none}
+  .nav::after{opacity:1}
+  .nav{background:rgba(244,244,241,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+  .brand,.nav.scrolled .brand{left:16px;top:16px}
+  .brand .hud{display:none}
+  .brand b{font-size:18px}
+  .mark,.nav.scrolled .mark{left:auto;right:64px;transform:none;top:21px;flex-direction:row;gap:8px}
+  .mark .star{display:none}
+  .mark .gword{display:none}
+  .burger{top:8px;right:6px}
+  .menu{display:block;position:fixed;inset:60px 0 auto 0;height:calc(100vh - 60px);height:calc(100svh - 60px);background:var(--paper);padding:10px 16px 30px;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .3s,transform .3s var(--ease),visibility 0s .3s;overflow:auto}
+  .nav.open .menu{opacity:1;transform:none;visibility:visible;transition:opacity .3s,transform .3s var(--ease)}
+  .menu a{display:flex;align-items:baseline;gap:14px;min-height:64px;padding:16px 0;border-bottom:1px solid var(--line);font-size:28px;font-weight:600;letter-spacing:-.03em}
+  .menu a .hud{width:26px}
+  .menu .mfoot{margin-top:26px;font-size:12px;color:var(--mute)}
+  .hero{height:max(760px,100svh);min-height:760px;--S:min(92vw,420px);--ex:50%;--ey:432px}
+  .static .hero{height:844px;min-height:844px}
+  .frame,.rail-l,.tile,.tile-cap,.hero-foot,.dial .lab{display:none}
+  .statement{left:16px;right:16px;top:86px;max-width:none}
+  .statement .hud{margin-bottom:10px}
+  .statement h1{font-size:30px}
+  .statement h1 .in1{padding-left:1.1em}
+  .plat{left:16px;right:auto;top:196px;gap:12px}
+  .chip{width:34px;height:34px;font-size:8.5px;margin-left:-9px}
+  .plat .num{font-size:32px}
+  .plat .lab{font-size:9px;margin-top:2px;letter-spacing:.16em}
+  .hero-word{left:16px;right:16px;bottom:216px}
+  .intro{left:16px;right:16px;width:auto;top:auto;bottom:22px}
+  .intro p{font-size:14px}
+  .btns{flex-wrap:nowrap}
+  .btn{flex:1;justify-content:center;padding:0 12px}
+  .dial{width:116%;height:116%}
+  .wrap{margin:0}
+  .sec-head{grid-template-columns:64px 1fr;height:42px}
+  .sec-head .rt{display:none}
+  .sec-head>*{padding:0 14px}
+  .kin-stage{padding:44px 0 26px}
+  .k1{font-size:76px}
+  .k2{font-size:48px;-webkit-text-stroke:1px var(--ink);margin-top:10px}
+  .steps{grid-template-columns:1fr}
+  .step{border-right:0;border-bottom:1px solid var(--line);min-height:0;padding:22px 16px 24px}
+  .step:last-child{border-bottom:0}
+  .step h3{font-size:26px;margin:14px 0 6px}
+  .row-bar{grid-template-columns:64px 1fr auto;height:42px}
+  .row-bar>*{padding:0 12px;font-size:9.5px}
+  .row-bar .x3{display:none}
+  .row-body{min-height:0}
+  .row-l{padding:28px 16px 32px}
+  .row-num{--nh:112px}
+  .row-l .eyebrow{margin-top:24px}
+  .row-l h2{font-size:34px}
+  .row-l .lead{font-size:14.5px}
+  .row-r{padding:20px 12px 32px}
+  .row-r::before{background-size:32px 32px}
+  .panel .pb{padding:14px 12px}
+  .q p{font-size:15.5px}
+  .grid6{grid-template-columns:repeat(2,1fr)}
+  .cell{min-height:94px;padding:10px}
+  .flag{grid-template-columns:24px 1fr auto;font-size:12px}
+  .flag .lnk{grid-column:2/4;order:5;margin-top:-6px}
+  .cols3{grid-template-columns:1fr;gap:4px}
+  .quote.ghost{display:none}
+  .team-top{grid-template-columns:1fr}
+  .team-top .side,.faq-body .side{display:none}
+  .team-top .ttl{padding:32px 16px 28px;border-right:0;border-bottom:1px solid var(--line)}
+  .team-top h2{font-size:38px}
+  .sum div{padding:18px 16px;min-height:96px}
+  .sum b{font-size:44px}
+  .sum b.cn{font-size:20px}
+  .spec-t thead{display:none}
+  .spec-t,.spec-t tbody,.spec-t tr,.spec-t td{display:block;width:auto!important}
+  .spec-t tr{display:grid;grid-template-columns:44px 1fr auto;grid-template-areas:"n nm dg" "n rl rl" "n sc sc";padding:16px 16px 16px 0;border-bottom:1px solid var(--line);column-gap:10px}
+  .spec-t td{border:0!important;padding:0}
+  .spec-t td:first-child{grid-area:n;padding-left:14px;padding-top:6px;font-size:10px}
+  .spec-t td.nm{grid-area:nm;font-size:20px}
+  .spec-t td.dg{grid-area:dg;align-self:center}
+  .spec-t td.rl{grid-area:rl;font-size:13.5px;margin-top:4px}
+  .spec-t td.sc{grid-area:sc;font-size:13px;color:var(--mute)}
+  .team-note{padding:14px 16px;flex-direction:column;gap:4px}
+  .faq-body{grid-template-columns:1fr}
+  .faq-l{padding:32px 16px 20px;border-right:0}
+  .faq-l h2{font-size:38px}
+  .qb{grid-template-columns:40px 1fr 44px;padding:18px 16px;min-height:72px}
+  .qb .t{font-size:17px}
+  .qa p{padding:0 16px 22px 56px;font-size:14px}
+  .cta{padding:96px 16px 90px}
+  .cta h2{font-size:38px}
+  .foot{padding:56px 16px 0}
+  .foot-top{grid-template-columns:1fr;gap:36px}
+  .fcols{grid-template-columns:1fr 1fr;row-gap:28px}
+  .fword{margin-top:64px}
+  .fbar{display:none}
+  .row-num{--nh:92px}
+  .row-l{padding:24px 16px 24px}
+  .row-l .eyebrow{margin-top:18px}
+  .row-l .lead{margin-top:14px}
+  .spec{margin-top:18px}
+  .spec li{padding:9px 0}
+  .row-r{padding:6px 12px 24px}
+  .flag .lnk{display:none}
+  .spec-t tr{padding:12px 16px 12px 0}
+  .cta{padding:72px 16px 64px}
+  .fword{margin-top:44px}
+  .foot{padding:48px 16px 0}
+  .step{padding:18px 16px 20px}
+  .step h3{margin:10px 0 4px}
+  .sum div{min-height:84px}
+  .kin-stage{padding:34px 0 18px}
+  .team-top .ttl{padding:28px 16px 24px}
+  .faq-l{padding:28px 16px 12px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <svg class="notch" id="notch" aria-hidden="true"><path d=""/></svg>
+  <a class="brand" href="#top" aria-label="方曦 FANGXI 回到顶部"><span class="bx">方</span><b>方曦</b><span class="hud">FANGXI</span></a>
+  <div class="mark" aria-hidden="true">
+    <span class="gword" id="navWord" data-word="FANGXI"></span>
+    <span class="pill">筹备中</span>
+    <svg class="star" viewBox="-10 -10 20 20"><path d="M0-10L2.6-2.6 10 0 2.6 2.6 0 10-2.6 2.6-10 0-2.6-2.6Z"/></svg>
+  </div>
+  <nav class="links" aria-label="主导航">
+    <a href="#geo">GEO 监测</a><a href="#safety">品牌安全</a><a href="#pollux">Pollux</a><a href="#team">团队</a><a href="#faq">常见问题</a>
+  </nav>
+  <button class="burger" id="burger" aria-label="打开菜单" aria-expanded="false" aria-controls="menu"><i></i><i></i></button>
+  <div class="menu" id="menu">
+    <a href="#geo"><span class="hud">01</span>GEO 品牌监测</a>
+    <a href="#safety"><span class="hud">02</span>品牌安全</a>
+    <a href="#pollux"><span class="hud">03</span>Pollux 用户洞察</a>
+    <a href="#team"><span class="hud">04</span>团队</a>
+    <a href="#faq"><span class="hud">05</span>常见问题</a>
+    <p class="mfoot">GEO 与 Pollux 均在筹备中 · 合作联系方式即将公布</p>
+  </div>
+</header>
+
+<main id="top">
+<!-- ======================= HERO ======================= -->
+<section class="hero" id="hero">
+  <div class="frame" aria-hidden="true">
+    <i class="v hl v" style="left:var(--fx);top:86px;bottom:0"></i>
+    <i class="v hl v" style="right:var(--fx);top:86px;bottom:0"></i>
+    <i class="h hl" style="left:var(--fx);right:var(--fx);top:var(--r1)"></i>
+    <i class="h hl" style="left:var(--fx);right:var(--fx);top:var(--r2)"></i>
+    <i class="h hl" style="left:var(--fx);right:calc(var(--fx) + 123px);top:var(--r3)"></i>
+    <i class="v hl v" style="left:calc(var(--fx) + 114px);top:var(--r2);height:calc(var(--r3) - var(--r2))"></i>
+    <i class="v hl v" style="left:calc(var(--fx) + 327px);top:var(--r2);height:calc(var(--r3) - var(--r2))"></i>
+    <i class="v hl v" style="right:calc(var(--fx) + 123px);top:var(--r2);bottom:46px"></i>
+    <i class="h hl" style="left:var(--fx);right:var(--fx);bottom:46px"></i>
+    <span class="tick" style="left:calc(var(--fx) + 327px);top:var(--r2)"></span>
+    <span class="tick" style="right:calc(var(--fx) + 119px);top:var(--r3)"></span>
+    <span class="tick" style="left:var(--fx);top:var(--r1)"></span>
+    <span class="tick" style="right:calc(var(--fx) - 8px);top:var(--r1)"></span>
+  </div>
+
+  <div class="statement reveal">
+    <p class="hud"><span>FIG.00</span><span>问题 / QUESTION</span></p>
+    <h1><span class="in1">当客户去问 <span class="nw">AI</span></span><br>答案里有你吗？</h1>
+  </div>
+
+  <div class="plat reveal" aria-label="规划覆盖 6 个 AI 平台">
+    <div class="chips" aria-hidden="true">
+      <span class="chip" style="--i:0">GPT</span><span class="chip" style="--i:1">DS</span><span class="chip" style="--i:2">豆包</span><span class="chip" style="--i:3">元宝</span><span class="chip" style="--i:4">千问</span><span class="chip" style="--i:5">文心</span>
+    </div>
+    <div><div class="num">6</div><div class="lab">AI 平台 · 规划覆盖</div></div>
+  </div>
+
+  <div class="rail-l">
+    <span class="hud">00.1</span>
+    <a class="down" href="#method" aria-label="向下，看方法"><span></span><i></i><i></i><i></i><i></i></a>
+    <span class="hud">006.</span>
+  </div>
+  <div class="tile" aria-hidden="true"><span class="c2"></span><span class="c3"></span>
+    <svg viewBox="-50 -50 100 100"><defs>
+      <radialGradient id="pg" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#e9e7e2"/><stop offset="1" stop-color="#8e8b85"/></radialGradient></defs>
+      <g fill="url(#pg)"><rect x="-11" y="-42" width="22" height="84" rx="11"/><rect x="-11" y="-42" width="22" height="84" rx="11" transform="rotate(60)"/><rect x="-11" y="-42" width="22" height="84" rx="11" transform="rotate(120)"/></g>
+      <circle r="9" fill="#fff" opacity=".9"/></svg>
+  </div>
+  <p class="tile-cap hud reveal">06 / 同题提问<b>一个问题，六个平台</b></p>
+
+  <div class="intro reveal">
+    <p>方曦把消费者选购时会问的问题，逐一提给 <span class="nw">ChatGPT</span>、豆包、<span class="nw">DeepSeek</span> 等 <span class="nw">AI</span>，留下原始回答和引用来源，标出你被提到、被漏掉、被说错的每一处。</p>
+    <div class="btns"><a class="btn" href="#geo">看 GEO 怎么做<span class="ar"></span></a><a class="btn ghost" href="#faq">常见问题</a></div>
+  </div>
+
+  <ul class="rail-r" id="railR" aria-label="规划覆盖的 AI 平台">
+    <li class="hud">QUERY →</li>
+    <li>ChatGPT</li><li>DeepSeek</li><li class="on">豆包</li><li>腾讯元宝</li><li>通义千问</li><li>文心一言</li>
+  </ul>
+
+  <div class="hero-word" id="heroWord" data-word="GEO" role="img" aria-label="GEO"></div>
+
+  <div class="eye-wrap" aria-hidden="true">
+    <svg class="dial" id="dial" viewBox="-100 -100 200 200"></svg>
+    <canvas id="eye"></canvas>
+  </div>
+
+  <div class="callouts" aria-hidden="true" id="callouts">
+    <div class="co reveal" style="left:calc(var(--S) * .16);top:calc(var(--S) * -.3)"><span class="ld" style="width:calc(var(--S) * .3)"></span><span class="tx"><span class="hud">REC.01</span><b>完整回答</b></span></div>
+    <div class="co reveal" style="left:calc(var(--S) * .3);top:calc(var(--S) * -.14)"><span class="ld" style="width:calc(var(--S) * .16)"></span><span class="tx"><span class="hud">REC.02</span><b>引用来源</b></span></div>
+    <div class="co reveal" style="left:calc(var(--S) * .36);top:calc(var(--S) * .02)"><span class="ld" style="width:calc(var(--S) * .08)"></span><span class="tx"><span class="hud">REC.03</span><b>抓取时间</b></span></div>
+  </div>
+
+  <div class="hero-foot">
+    <span class="hud">FIG.01 — AI LENS · 示意</span>
+    <span class="hud mid">GEO = 生成式引擎优化</span>
+    <span class="hud">问清楚，存下来，标出来。</span>
+  </div>
+</section>
+
+<!-- ======================= METHOD / KINETIC ======================= -->
+<section class="kin" id="method">
+  <div class="wrap">
+    <div class="sec-head"><span class="no">02</span><span class="nm">方法 / METHOD</span><span class="rt">三步，每一步都留下证据</span></div>
+  </div>
+  <div class="kin-stage" aria-hidden="true">
+    <div class="kin-line k1" data-dir="-1" data-amp="0.34"><span id="k1t"></span></div>
+    <div class="kin-line k2" data-dir="1" data-amp="0.26"><span id="k2t"></span></div>
+    <div class="kin-line k3" data-dir="-1" data-amp="0.12"><span id="k3t"></span></div>
+  </div>
+  <div class="wrap">
+    <div class="steps">
+      <div class="step reveal"><div class="hud"><span>STEP 01</span><span>ASK</span></div><h3>问清楚</h3><p>按人群、场景和预算，写下消费者选购时真正会问的问题，逐一提给主流 AI 平台。</p></div>
+      <div class="step reveal"><div class="hud"><span>STEP 02</span><span>RECORD</span></div><h3>存下来</h3><p>保存每一次的完整回答、引用来源和抓取时间，之后随时可以回看、对照。</p></div>
+      <div class="step reveal"><div class="hud"><span>STEP 03</span><span>MARK</span></div><h3>标出来</h3><p>标出品牌被提到的位置（第几位、和谁一起）、被漏掉的问题，以及被说错的地方。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= BUSINESS ROWS ======================= -->
+<section id="lines" class="wrap">
+  <article class="row" id="geo">
+    <div class="row-bar"><span>01 / 03</span><span>GEO 品牌监测</span><span class="x3">主营业务</span><span class="on"><i></i>筹备中</span></div>
+    <div class="row-body">
+      <div class="row-l">
+        <div class="row-num" data-num="01"></div>
+        <p class="hud eyebrow reveal">GENERATIVE ENGINE OPTIMIZATION</p>
+        <h2 class="reveal">同一个问题<br>问遍主流 <span class="nw">AI</span></h2>
+        <p class="lead reveal">GEO 关心的是：消费者问 AI 的时候，你的品牌有没有出现、排在第几、和谁一起被提到、被怎么描述。我们把这些一项项查清楚，并留下可以追溯的原始记录。</p>
+        <ol class="spec reveal">
+          <li><span class="hud">A</span><span>按人群、场景、预算写下选购问题</span></li>
+          <li><span class="hud">B</span><span>在 <span class="nw">ChatGPT</span>、<span class="nw">DeepSeek</span>、豆包、腾讯元宝、通义千问、文心一言上提问（规划覆盖）</span></li>
+          <li><span class="hud">C</span><span>保存完整回答、引用来源、抓取时间</span></li>
+          <li><span class="hud">D</span><span>标出提到、漏掉、说错，整理成改进清单</span></li>
+        </ol>
+      </div>
+      <div class="row-r">
+        <figure class="panel reveal">
+          <span class="corner a"></span><span class="corner b"></span><span class="corner c"></span><span class="corner d"></span>
+          <div class="ph"><span class="dots"><i></i><i></i><i></i></span><span>GEO / QUERY LOG</span><span class="tag">示例 · 品牌为虚构</span></div>
+          <div class="scan"></div>
+          <div class="pb">
+            <div class="q"><span class="qk">Q</span><p>“小户型开放式厨房，<span class="nw">集成灶</span>选哪个牌子好？”<small>人群：首次装修 · 场景：小户型 · 同一问题 × 6 个平台</small></p></div>
+            <div class="grid6">
+              <div class="cell"><div class="pn">ChatGPT<span class="hud">P1</span></div><div><div class="st m"><i></i>提到 · 第 2 位</div><div class="sub">与 C 品牌同列</div></div></div>
+              <div class="cell"><div class="pn">DeepSeek<span class="hud">P2</span></div><div><div class="st o"><i></i>未提到</div><div class="sub">提到 A 品牌、C 品牌</div></div></div>
+              <div class="cell"><div class="pn">豆包<span class="hud">P3</span></div><div><div class="st m"><i></i>提到 · 第 1 位</div><div class="sub">引用来源 3 条</div></div></div>
+              <div class="cell"><div class="pn">腾讯元宝<span class="hud">P4</span></div><div><div class="st w"><i></i>描述有误</div><div class="sub">功能描述与官网不符</div></div></div>
+              <div class="cell"><div class="pn">通义千问<span class="hud">P5</span></div><div><div class="st m"><i></i>提到 · 第 4 位</div><div class="sub">与 A 品牌同列</div></div></div>
+              <div class="cell"><div class="pn">文心一言<span class="hud">P6</span></div><div><div class="st o"><i></i>未提到</div><div class="sub">回答已保存</div></div></div>
+            </div>
+            <div class="legend"><span class="st m"><i></i>被提到</span><span class="st o"><i></i>被漏掉</span><span class="st w"><i></i>被说错</span></div>
+          </div>
+          <div class="pf"><span>你的品牌 · 示例</span><span>存：完整回答 / 引用来源 / 抓取时间</span></div>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="row" id="safety">
+    <div class="row-bar"><span>02 / 03</span><span>品牌安全</span><span class="x3">BRAND SAFETY</span><span class="on"><i></i>筹备中</span></div>
+    <div class="row-body">
+      <div class="row-l">
+        <div class="row-num" data-num="02"></div>
+        <p class="hud eyebrow reveal">WRONG FACTS · LOOKALIKE SITES</p>
+        <h2 class="reveal">说错的、冒充的<br>都标出来</h2>
+        <p class="lead reveal">AI 的回答里可能出现错误的事实，比如价格写错；也可能引用仿冒、钓鱼网站，或者和事实冲突的帖子。我们把它们找出来，留存证据，交给你核实。</p>
+        <ol class="spec reveal">
+          <li><span class="hud">A</span><span>找出回答里的错误事实，例如错误价格</span></li>
+          <li><span class="hud">B</span><span>找出被引用的仿冒、钓鱼网站和冲突帖子</span></li>
+          <li><span class="hud">C</span><span>保留原文、来源链接和页面快照</span></li>
+          <li><span class="hud">D</span><span>逐条标注待核实，在相同条件下定期复测</span></li>
+        </ol>
+      </div>
+      <div class="row-r">
+        <figure class="panel reveal">
+          <span class="corner a"></span><span class="corner b"></span><span class="corner c"></span><span class="corner d"></span>
+          <div class="ph"><span class="dots"><i></i><i></i><i></i></span><span>SAFETY / FLAGS</span><span class="tag">示例 · 品牌为虚构</span></div>
+          <div class="scan"></div>
+          <div class="pb">
+            <div class="ans"><span class="hud">AI 回答原文 · 节选</span>
+              你的品牌这款洗碗机目前<span class="mk">售价约 <span class="redact"></span> 元<sup>F1</sup></span>，可以在 <span class="mk nw">yourbrand-shop.example<sup>F2</sup></span> 下单，有网友发帖说<span class="mk">安装需要改橱柜<sup>F3</sup></span>。
+            </div>
+            <div class="flags">
+              <div class="flag"><span class="hud">F1</span><span>价格与官网不一致</span><span class="lnk">原文 · 快照已存</span><span class="vf">待核实</span></div>
+              <div class="flag"><span class="hud">F2</span><span>疑似仿冒站点</span><span class="lnk">yourbrand-shop.example</span><span class="vf">待核实</span></div>
+              <div class="flag"><span class="hud">F3</span><span>与官方说明冲突的帖子</span><span class="lnk">来源链接 · 快照已存</span><span class="vf">待核实</span></div>
+            </div>
+            <div class="retest"><span><em>首测</em></span><span><em>复测</em></span><span><em>复测</em></span><span><em>复测</em></span><span></span></div>
+          </div>
+          <div class="pf"><span>同一问题 · 同一平台 · 相同条件</span><span>保留原文 / 来源链接 / 页面快照</span></div>
+        </figure>
+      </div>
+    </div>
+  </article>
+
+  <article class="row" id="pollux">
+    <div class="row-bar"><span>03 / 03</span><span>Pollux 用户洞察</span><span class="x3">第二条业务线</span><span class="on"><i></i>研发中</span></div>
+    <div class="row-body">
+      <div class="row-l">
+        <div class="row-num" data-num="03"></div>
+        <p class="hud eyebrow reveal">POLLUX · VOICE OF CUSTOMER</p>
+        <h2 class="reveal">从用户的原话里<br>读出购买动机</h2>
+        <p class="lead reveal">Pollux 读用户评价和访谈，把零散的原话归到购买动机、顾虑和使用场景下面。每一条结论，都能找回它出自哪一句原话。先从厨房家电做起。</p>
+        <ol class="spec reveal">
+          <li><span class="hud">A</span><span>读取用户评价与访谈记录</span></li>
+          <li><span class="hud">B</span><span>按购买动机、顾虑、使用场景归类</span></li>
+          <li><span class="hud">C</span><span>每条结论都链接回原话</span></li>
+          <li><span class="hud">D</span><span>首个品类：厨房家电</span></li>
+        </ol>
+      </div>
+      <div class="row-r">
+        <figure class="panel reveal">
+          <span class="corner a"></span><span class="corner b"></span><span class="corner c"></span><span class="corner d"></span>
+          <div class="ph"><span class="dots"><i></i><i></i><i></i></span><span>POLLUX / QUOTES</span><span class="tag">示例 · 内容为虚构</span></div>
+          <div class="scan"></div>
+          <div class="pb">
+            <div class="q"><span class="qk">R</span><p>研究问题：第一次买洗碗机，最在意什么？<small>品类：厨房家电 · 来源：用户评价 + 访谈</small></p></div>
+            <div class="cols3">
+              <div class="colx"><div class="hud"><span>顾虑</span><span>02</span></div>
+                <div class="quote">“家里橱柜是旧的，最怕装不进去。”<div class="tr"><span>↳ 原话 · 访谈</span><span>#Q-014</span></div></div>
+                <div class="quote">“滤网要不要天天洗？维护麻不麻烦？”<div class="tr"><span>↳ 原话 · 评价</span><span>#Q-031</span></div></div></div>
+              <div class="colx"><div class="hud"><span>使用场景</span><span>01</span></div>
+                <div class="quote">“锅碗多的时候，大盘子能不能放才是关键。”<div class="tr"><span>↳ 原话 · 评价</span><span>#Q-022</span></div></div>
+                <div class="quote ghost">更多原话归类中</div></div>
+              <div class="colx"><div class="hud"><span>购买动机</span><span>—</span></div>
+                <div class="quote ghost">每条结论可追溯到原话</div>
+                <div class="quote ghost">示例数据，非真实调研</div></div>
+            </div>
+          </div>
+          <div class="pf"><span>结论 → 原话 · 可追溯</span><span>首个品类：厨房家电</span></div>
+        </figure>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ======================= TEAM ======================= -->
+<section class="wrap" id="team" style="scroll-margin-top:64px">
+  <div class="sec-head"><span class="no">04</span><span class="nm">团队 / SPEC SHEET</span><span class="rt">研究背景 · 计算机 / 人工智能 / 信息系统</span></div>
+  <div class="team-top">
+    <div class="side"></div>
+    <div class="ttl"><h2 class="reveal">这件事<br>由一群研究者来做</h2><p class="reveal">成员来自计算机、人工智能和信息系统方向，习惯用做研究的方式做事：先取证，再下结论。</p></div>
+    <div class="sum reveal">
+      <div><span class="hud">核心成员</span><b>8</b></div>
+      <div><span class="hud">博士</span><b>5</b></div>
+      <div><span class="hud">硕士</span><b>3</b></div>
+      <div><span class="hud">方法</span><b class="cn">先取证<br>再下结论</b></div>
+    </div>
+  </div>
+  <table class="spec-t">
+    <thead><tr><th>NO.</th><th>姓名</th><th>职责</th><th>学位</th><th>院校 / 方向</th></tr></thead>
+    <tbody>
+      <tr class="d"><td>T-01</td><td class="nm">李佑华</td><td class="rl">联合创始人</td><td class="dg"><span>博士</span></td><td class="sc">香港城市大学 · 金融决策分析与运筹学</td></tr>
+      <tr class="d"><td>T-02</td><td class="nm">倪泳鑫</td><td class="rl">首席科学家</td><td class="dg"><span>博士</span></td><td class="sc">波士顿大学</td></tr>
+      <tr class="d"><td>T-03</td><td class="nm">栾吉宁</td><td class="rl">总架构师</td><td class="dg"><span>博士</span></td><td class="sc">中国科学技术大学 · 商科</td></tr>
+      <tr class="d"><td>T-04</td><td class="nm">方新宇</td><td class="rl">首席量化研究员</td><td class="dg"><span>博士</span></td><td class="sc">中国科学技术大学</td></tr>
+      <tr class="d"><td>T-05</td><td class="nm">涂文哲</td><td class="rl">战略总监</td><td class="dg"><span>博士</span></td><td class="sc">电子科技大学</td></tr>
+      <tr><td>T-06</td><td class="nm">饶子豪</td><td class="rl">首席市场总监</td><td class="dg"><span>硕士</span></td><td class="sc">电子科技大学</td></tr>
+      <tr><td>T-07</td><td class="nm">王昕</td><td class="rl">首席算法工程师</td><td class="dg"><span>硕士</span></td><td class="sc">电子科技大学</td></tr>
+      <tr><td>T-08</td><td class="nm">李佑东</td><td class="rl">首席运营总监</td><td class="dg"><span>硕士</span></td><td class="sc">电子科技大学</td></tr>
+    </tbody>
+  </table>
+  <div class="team-note"><span>表中为核心成员</span><span>先取证，再下结论。</span></div>
+</section>
+
+<!-- ======================= FAQ ======================= -->
+<section class="wrap" id="faq" style="scroll-margin-top:64px">
+  <div class="sec-head"><span class="no">05</span><span class="nm">常见问题 / FAQ</span><span class="rt">5 个问题</span></div>
+  <div class="faq-body">
+    <div class="side"></div>
+    <div class="faq-l"><h2 class="reveal">常见问题</h2><p class="reveal">关于 GEO、平台范围和合作方式，先在这里说清楚。</p></div>
+    <ul class="faq-list">
+      <li><button class="qb" aria-expanded="true"><span class="hud">Q.01</span><span class="t">什么是 GEO？</span><span class="pm"></span></button><div class="qa"><div><p>GEO 是生成式引擎优化。越来越多的人在选购前先问 AI，GEO 关心的是：你的品牌在 AI 的回答里有没有出现、排在第几、被怎么描述。</p></div></div></li>
+      <li><button class="qb" aria-expanded="false"><span class="hud">Q.02</span><span class="t">方曦的 GEO 具体做什么？</span><span class="pm"></span></button><div class="qa"><div><p>按人群、场景和预算写下消费者会问的问题，逐一提给主流 AI 平台；保存完整回答、引用来源和抓取时间；标出品牌被提到（第几位、和谁一起）、被漏掉或被说错的地方，整理成可追溯的证据和改进清单。</p></div></div></li>
+      <li><button class="qb" aria-expanded="false"><span class="hud">Q.03</span><span class="t">覆盖哪些 AI 平台？</span><span class="pm"></span></button><div class="qa"><div><p>规划覆盖 ChatGPT、DeepSeek、豆包、腾讯元宝、通义千问、文心一言。每次合作的具体范围，在合作时确认。</p></div></div></li>
+      <li><button class="qb" aria-expanded="false"><span class="hud">Q.04</span><span class="t">现在可以使用吗？</span><span class="pm"></span></button><div class="qa"><div><p>GEO 和 Pollux 都还在筹备中。页面上展示的内容都是示例，不是真实的检测结果。合作联系方式即将公布。</p></div></div></li>
+      <li><button class="qb" aria-expanded="false"><span class="hud">Q.05</span><span class="t">会承诺 AI 一定推荐我们吗？</span><span class="pm"></span></button><div class="qa"><div><p>不会。AI 怎么回答，不由任何一家公司决定。我们提供可追溯的证据和改进清单，交付内容以合作协议为准。</p></div></div></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ======================= CTA + FOOTER ======================= -->
+<section class="cta" id="contact">
+  <span class="hud reveal">CONTACT · 即将公布</span>
+  <h2 class="reveal">想知道 <span class="nw">AI</span> 怎么说你？</h2>
+  <p class="reveal">合作联系方式即将公布。在那之前，可以先看看我们怎么查、查什么。</p>
+  <a class="btn reveal" href="#geo">看 GEO 怎么做<span class="ar"></span></a>
+</section>
+</main>
+
+<footer class="foot" id="foot">
+  <div class="foot-top">
+    <div>
+      <div class="fbrand"><span class="bx">方</span>方曦 FANGXI</div>
+      <p class="tag">问清楚，存下来，标出来。</p>
+      <div class="sq"><a href="#top" aria-label="回到顶部">↑</a><a href="#geo" aria-label="看 GEO 品牌监测">01</a><a href="#faq" aria-label="看常见问题">?</a></div>
+    </div>
+    <div class="fcols">
+      <div><h4>业务</h4><a href="#geo">GEO 品牌监测</a><a href="#safety">品牌安全</a><a href="#pollux">Pollux 用户洞察</a></div>
+      <div><h4>公司</h4><a href="#method">方法</a><a href="#team">团队</a><a href="#faq">常见问题</a></div>
+      <div><h4>平台 · 规划覆盖</h4><span>ChatGPT · DeepSeek</span><span>豆包 · 腾讯元宝</span><span>通义千问 · 文心一言</span></div>
+      <div><h4>状态</h4><span class="now">筹备中</span><span>合作联系方式即将公布</span><span>页面内容均为示例</span></div>
+    </div>
+  </div>
+  <div class="fword" id="fword"><div class="fbar"><span>© 方曦 FANGXI</span><span>GEO · 品牌安全 · POLLUX</span></div><div class="in" id="fwordIn" data-word="FANGXI" role="img" aria-label="FANGXI"></div></div>
+</footer>
+
+<canvas id="ink" aria-hidden="true"></canvas>
+<script src="type.js"></script>
+<script src="eye.js"></script>
+<script src="ink.js"></script>
+</body>
+</html>

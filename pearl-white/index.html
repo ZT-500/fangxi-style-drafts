@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方曦 FANGXI — 珍珠白</title>
+<script>if (new URLSearchParams(location.search).has('static')) document.documentElement.classList.add('static');</script>
+<style>
+  /* 珍珠白: ClarionAI's section order, dressed in LaunchPad's white page, gray-900 type, one blue-600 accent, glossy code-rendered glass. */
+  :root {
+    --ink: #111827; --ink-2: #374151; --mute: #6b7280; --faint: #9ca3af;
+    --well: #f3f4f6; --line: #e5e7eb; --blue: #2563eb; --blue-h: #1d4ed8;
+    --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    --serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", STSong, SimSun, serif;
+    --mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #fff; color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+  p { text-wrap: pretty; }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+  .max { max-width: 1200px; margin-inline: auto; padding-inline: 32px; }
+  .nw { white-space: nowrap; }
+  .q { margin-right: -.42em; }
+  .serif { font-family: var(--serif); font-weight: 600; letter-spacing: .01em; }
+
+  /* LaunchPad buttons: small blue pill with an arrow; a grey-100 secondary. */
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 22px; border-radius: 999px; font-size: 15px; font-weight: 500; white-space: nowrap; transition: background-color .2s, transform .2s, box-shadow .2s; }
+  .btn-blue { background: var(--blue); color: #fff; box-shadow: 0 6px 18px -6px rgba(37,99,235,.55); }
+  .btn-blue:hover { background: var(--blue-h); transform: translateY(-1px); box-shadow: 0 10px 24px -8px rgba(37,99,235,.6); }
+  .btn-grey { background: var(--well); color: var(--ink); }
+  .btn-grey:hover { background: #e9eaee; }
+  .btn .arr { transition: transform .2s; }
+  .btn:hover .arr { transform: translateX(3px); }
+  .tag { display: inline-flex; align-items: center; height: 26px; padding: 0 11px; border-radius: 999px; background: var(--well); font-size: 12px; font-weight: 500; color: var(--ink-2); white-space: nowrap; }
+  .eyebrow { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--faint); }
+
+  /* LaunchPad motion: 0.8s fade-up 20px, staggered. */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s ease, transform .8s ease; transition-delay: var(--d, 0ms); }
+  .reveal.in { opacity: 1; transform: none; }
+  .static .reveal { opacity: 1; transform: none; transition: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+  canvas { display: block; }
+  canvas.no-gl { background: radial-gradient(60% 50% at 60% 60%, #fbe3ee, #e4f4f6 45%, #fff 75%); }
+
+  /* 1. Navigation */
+  .nav { position: fixed; inset: 0 0 auto; z-index: 50; transition: background-color .3s, box-shadow .3s; }
+  .nav.scrolled, .nav.open { background: rgba(255,255,255,.82); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); box-shadow: 0 1px 0 rgba(17,24,39,.06); }
+  .nav .max { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 600; letter-spacing: .06em; }
+  .logo svg { width: 28px; height: 28px; flex-shrink: 0; }
+  .logo small { font-family: "Helvetica Neue", Arial, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .22em; color: var(--faint); }
+  .nav-links { display: flex; gap: 34px; font-size: 14px; font-weight: 500; color: var(--mute); }
+  .nav-links a { transition: color .2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-right .btn { min-height: 40px; padding: 0 18px; font-size: 14px; }
+  .burger { display: none; width: 44px; height: 44px; padding: 0 12px; border: 0; border-radius: 999px; background: var(--well); cursor: pointer; }
+  .burger span { display: block; height: 1.5px; margin: 6px 0; background: var(--ink); border-radius: 2px; transition: transform .25s; }
+  .nav.open .burger span:first-child { transform: translateY(3.75px) rotate(45deg); }
+  .nav.open .burger span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+  /* 2. Hero: the pearl ribbon render full-bleed on white, a huge centred headline. */
+  .hero { position: relative; z-index: 0; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 140px 0 56px; overflow: hidden; }
+  .static .hero { min-height: 940px; }
+  .hero > canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background: radial-gradient(ellipse 40% 24% at 50% 40%, rgba(255,255,255,.7), transparent 75%), linear-gradient(180deg, rgba(255,255,255,.55), transparent 22%, transparent 80%, #fff); }
+  .hero .eyebrow { margin-bottom: 28px; }
+  .hero h1 { margin: 0 0 26px; padding-inline: 16px; font-size: 86px; line-height: 1.1; font-weight: 600; letter-spacing: -.03em; text-align: center; }
+  .hero h1, .cta h2 { align-self: stretch; }
+  .hero h1 .serif { font-weight: 700; }
+  .hero-sub { max-width: 700px; margin: 0; padding-inline: 24px; font-size: 17px; line-height: 1.8; color: var(--ink-2); text-align: center; text-wrap: balance; }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 38px; }
+  .marquee-label { margin: 120px 0 26px; font-size: 13px; font-weight: 500; color: var(--ink-2); text-shadow: 0 0 6px #fff, 0 0 14px #fff; text-align: center; }
+  .marquee { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent); }
+  .marquee-track { display: flex; width: max-content; animation: marquee 36s linear infinite; }
+  .marquee-track span { flex-shrink: 0; display: inline-flex; align-items: center; gap: 12px; padding: 0 34px; font-size: 24px; font-weight: 600; letter-spacing: -.01em; color: #374151; text-shadow: 0 0 10px rgba(255,255,255,.9); }
+  .marquee-track span::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: conic-gradient(from 40deg, #f3b9d3, #c4b6ff, #9fdcdc, #f2cf8a, #f3b9d3); box-shadow: 0 0 0 1px rgba(17,24,39,.08); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+  /* 3–5. Alternating feature rows: copy + a framed live render with a floating frosted card. */
+  .features { padding-top: 64px; }
+  .feature { display: grid; grid-template-columns: 1fr 1.08fr; gap: 72px; align-items: center; padding-block: 72px; }
+  .feature.flip { grid-template-columns: 1.08fr 1fr; }
+  .feature.flip .copy { order: 2; }
+  .feature h2 { margin: 20px 0 0; font-size: 52px; line-height: 1.14; font-weight: 600; letter-spacing: -.025em; }
+  .feature p.lead { max-width: 25em; margin: 22px 0 32px; font-size: 17px; line-height: 1.85; color: var(--mute); }
+  .steps { display: grid; gap: 0; margin: -8px 0 32px; padding: 0; list-style: none; max-width: 27em; }
+  .steps li { display: grid; grid-template-columns: 34px 1fr; padding: 12px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+  .steps li b { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--faint); padding-top: 3px; }
+  .mock { position: relative; z-index: 0; aspect-ratio: 4 / 3.15; display: flex; align-items: flex-end; justify-content: flex-start; padding: 28px; border-radius: 24px; overflow: hidden; isolation: isolate; }
+  .mock > canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .mock.at-r { justify-content: flex-end; }
+  .mock.at-r .demo-tag { right: auto; left: 14px; }
+  .mock:hover > canvas { transform: scale(1.04); }
+  .ui { width: 100%; max-width: 400px; padding: 14px; border: 1px solid rgba(255,255,255,.75); border-radius: 18px; background: rgba(255,255,255,.74); -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5); box-shadow: 0 30px 60px -24px rgba(17,24,39,.42), 0 2px 6px rgba(17,24,39,.06); font-size: 14px; line-height: 1.75; color: var(--ink-2); transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .mock:hover .ui { transform: translateY(-4px); }
+  .ui-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ui-chip { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 10px; background: rgba(17,24,39,.05); font-size: 13px; white-space: nowrap; color: var(--ink); }
+  .ui-chip i { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+  .ui-chip.off { color: var(--faint); } .ui-chip.off i { background: #d1d5db; }
+  .ui-well { margin-top: 10px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.8); box-shadow: inset 0 0 0 1px rgba(17,24,39,.05); }
+  .ui-well:first-child { margin-top: 0; }
+  .ui-well small { display: block; margin-bottom: 4px; font-size: 12px; color: var(--faint); }
+  .ui mark { padding: 1px 6px; border-radius: 5px; background: #fef3c7; color: #92400e; box-shadow: inset 0 -2px 0 #f59e0b; white-space: nowrap; }
+  .ui-input { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 7px 7px 7px 16px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 1px rgba(17,24,39,.08); color: var(--ink); }
+  .ui-input b { flex: 1; font-weight: 400; }
+  .ui-send { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: var(--blue); color: #fff; font-size: 15px; }
+  .ui-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: var(--ink); }
+  .ui-label { display: block; margin: 12px 2px 2px; font-size: 12px; color: var(--faint); }
+  .ui-text { margin: 0; padding: 0 2px; }
+  .flag { padding: 2px 10px; border-radius: 999px; font-size: 12px; white-space: nowrap; color: #b91c1c; background: #fee2e2; }
+  .ui code { font-family: var(--mono); font-size: 13px; color: var(--ink); white-space: nowrap; }
+  .ui code s { text-decoration: none; color: #dc2626; background: #fee2e2; border-radius: 3px; padding: 0 2px; }
+  .ui-files { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+  .ui-files span { padding: 4px 10px; border-radius: 8px; background: rgba(17,24,39,.05); font-size: 12px; color: var(--mute); white-space: nowrap; }
+  .ui-quote { padding: 10px 2px; border-bottom: 1px solid rgba(17,24,39,.07); color: var(--ink); }
+  .ui-quote:last-child { border-bottom: 0; padding-bottom: 2px; }
+  .ui-quote u { text-decoration: none; box-shadow: inset 0 -2px 0 #8b5cf6; }
+  .ui-quote em { margin-left: 8px; font-style: normal; font-size: 12px; color: #6d28d9; white-space: nowrap; }
+  .demo-tag { position: absolute; right: 14px; top: 14px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.82); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 12px; color: var(--ink-2); }
+
+  /* 6. Team: LaunchPad's header (title left, grey line + blue pill right) over author cards. */
+  .team { padding-block: 120px 96px; }
+  .lp-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 48px; }
+  .lp-head h2 { margin: 16px 0 0; font-size: 48px; line-height: 1.15; font-weight: 600; letter-spacing: -.025em; }
+  .lp-head .side { max-width: 400px; text-align: right; }
+  .lp-head .side p { margin: 0 0 14px; font-size: 15px; line-height: 1.7; color: var(--mute); }
+  .people { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .person { padding: 22px; border-radius: 20px; background: #fafafa; box-shadow: inset 0 0 0 1px #f0f0f2; transition: transform .35s ease, box-shadow .35s ease, background-color .35s; }
+  .person:hover { transform: translateY(-4px); background: #fff; box-shadow: inset 0 0 0 1px #eceef2, 0 24px 40px -24px rgba(17,24,39,.25); }
+  .ava { position: relative; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 18px; font-size: 18px; font-weight: 600; color: var(--ink);
+    background: radial-gradient(circle at 34% 28%, #fff 0 14%, transparent 42%), conic-gradient(from var(--a, 30deg), #f6c3d8, #d3c9ff, #b5e6e6, #f5dca6, #f6c3d8);
+    box-shadow: inset 0 -6px 12px rgba(17,24,39,.12), 0 6px 14px -6px rgba(17,24,39,.3); }
+  .person h3 { margin: 12px 0 4px; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
+  .person p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--mute); }
+
+  /* 7. FAQ */
+  .faq { max-width: 800px; margin: 0 auto; padding: 72px 24px 120px; }
+  .faq .eyebrow { display: block; text-align: center; margin-bottom: 14px; }
+  .faq h2 { margin: 0 0 44px; font-size: 48px; line-height: 1.2; font-weight: 600; letter-spacing: -.025em; text-align: center; }
+  .faq-box { border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 30px 60px -40px rgba(17,24,39,.18); }
+  .faq-item + .faq-item { border-top: 1px solid var(--line); }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; min-height: 64px; padding: 20px 24px; border: 0; background: none; text-align: left; font-size: 17px; font-weight: 500; color: var(--ink); cursor: pointer; }
+  .faq-q:hover { color: var(--blue); }
+  .faq-q i { flex-shrink: 0; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--well); transition: transform .3s, background-color .3s, color .3s; }
+  .faq-q i svg { width: 16px; height: 16px; }
+  .faq-item.open .faq-q i { transform: rotate(45deg); background: var(--blue); color: #fff; }
+  .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .faq-item.open .faq-a { grid-template-rows: 1fr; }
+  .faq-a > div { overflow: hidden; }
+  .faq-a p { margin: 0; padding: 0 72px 24px 24px; font-size: 15px; line-height: 1.85; color: var(--mute); }
+
+  /* 8. Footer: CTA inside a framed soft render, then the link grid on white. */
+  .footer { padding: 0 0 36px; }
+  .cta { position: relative; z-index: 0; isolation: isolate; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 520px; padding: 80px 24px; border: 1px solid #eceef2; border-radius: 28px; overflow: hidden; text-align: center; }
+  .cta > canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  .cta::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse 46% 40% at 50% 50%, rgba(255,255,255,.72), rgba(255,255,255,.2) 80%); pointer-events: none; }
+  .cta h2 { margin: 0 0 18px; font-size: 64px; line-height: 1.15; font-weight: 600; letter-spacing: -.03em; }
+  .cta p { margin: 0; font-size: 16px; color: var(--ink-2); }
+  .cta .actions { margin-top: 30px; }
+  .links { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 32px; padding-block: 72px 56px; }
+  .links h3 { margin: 0 0 16px; font-size: 14px; font-weight: 600; }
+  .links .item { display: block; margin-bottom: 10px; font-size: 14px; color: var(--mute); transition: color .2s; }
+  .links a.item:hover { color: var(--blue); }
+  .brandcol p { margin: 14px 0 0; font-size: 15px; line-height: 1.7; color: var(--mute); }
+  .bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; padding-top: 28px; border-top: 1px solid var(--line); font-size: 12px; color: var(--faint); }
+
+  @media (max-width: 1100px) {
+    .hero h1 { font-size: 68px; }
+    .feature, .feature.flip { gap: 44px; }
+    .feature h2 { font-size: 42px; }
+    .people { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .max { padding-inline: 16px; }
+    .nav .max { height: 64px; }
+    .burger { display: block; }
+    .nav-links { display: none; }
+    .nav.open .nav-links { display: flex; flex-direction: column; gap: 2px; position: absolute; top: 62px; left: 12px; right: 12px; padding: 8px; border-radius: 18px; background: rgba(255,255,255,.96); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 24px 48px -16px rgba(17,24,39,.25), 0 0 0 1px rgba(17,24,39,.06); font-size: 16px; color: var(--ink); }
+    .nav.open .nav-links a { display: flex; align-items: center; min-height: 48px; padding: 0 14px; border-radius: 12px; }
+    .nav.open .nav-links a:active { background: var(--well); }
+    .nav-right .btn { display: none; }
+    .hero { padding: 108px 0 40px; justify-content: flex-start; }
+    .static .hero { min-height: 844px; }
+    .hero .eyebrow { margin: 10px 0 20px; }
+    .hero h1 { font-size: clamp(40px, 11.6vw, 52px); line-height: 1.14; }
+    .hero-sub { font-size: 16px; padding-inline: 20px; }
+    .hero-sub br { display: none; }
+    .hero::after { background: radial-gradient(ellipse 120% 34% at 50% 30%, rgba(255,255,255,.8), transparent 75%), linear-gradient(180deg, rgba(255,255,255,.4), transparent 30%, transparent 86%, #fff); }
+    .actions { margin-top: 28px; }
+    .marquee-label { margin-top: auto; padding-top: 48px; }
+    .marquee-track span { padding: 0 20px; font-size: 19px; }
+    .features { padding-top: 24px; }
+    .feature, .feature.flip { grid-template-columns: 1fr; gap: 32px; padding-block: 52px; }
+    .feature.flip .copy { order: 0; }
+    .feature h2 { font-size: 36px; }
+    .feature p.lead { font-size: 16px; margin-bottom: 26px; }
+    .mock { aspect-ratio: auto; align-items: flex-end; padding: 200px 12px 12px; border-radius: 20px; }
+    .ui { max-width: 100%; }
+    .ui-quote em { display: block; margin: 2px 0 0; }
+    .team { padding-block: 72px 56px; }
+    .lp-head { flex-direction: column; align-items: flex-start; gap: 18px; margin-bottom: 32px; }
+    .lp-head h2 { font-size: 34px; }
+    .lp-head .side { text-align: left; }
+    .lp-head .side .nw { white-space: normal; }
+    .lp-head .side br { display: none; }
+    .people { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .person { padding: 16px; border-radius: 16px; }
+    .ava { width: 44px; height: 44px; font-size: 16px; margin-bottom: 12px; }
+    .person h3 { font-size: 17px; margin-top: 10px; }
+    .person p { font-size: 13px; }
+    .person .tag { height: 24px; padding: 0 9px; font-size: 11px; }
+    .faq { padding: 48px 16px 80px; }
+    .faq h2 { font-size: 32px; margin-bottom: 32px; }
+    .faq-q { padding: 16px 18px; font-size: 16px; }
+    .faq-a p { padding: 0 18px 20px; }
+    .cta { min-height: 480px; padding: 64px 18px; border-radius: 22px; }
+    .cta h2 { font-size: clamp(32px, 9.4vw, 40px); }
+    .links { grid-template-columns: 1fr 1fr; gap: 28px 16px; padding-block: 52px 40px; }
+    .links .brandcol { grid-column: 1 / -1; }
+    .links h3 { margin-bottom: 4px; }
+    .links .item { margin: 0; padding: 10px 0; }
+    .bottom { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="max">
+      <a class="logo" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 36h34M13 31a11 11 0 0 1 22 0M24 5v8M6 15l6 6M42 15l-6 6" fill="none" stroke="#111827" stroke-width="2.6" stroke-linecap="round"/></svg>方曦<small>FANGXI</small></a>
+      <nav class="nav-links" id="nav-links"><a href="#geo">GEO 监测</a><a href="#safety">品牌安全</a><a href="#pollux">Pollux</a><a href="#people">团队</a><a href="#faq">常见问题</a></nav>
+      <div class="nav-right"><a class="btn btn-blue" href="#contact">联系我们</a><button class="burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button></div>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <canvas data-scene="hero" data-speed="1.8" data-res=".8" data-p="1,0,0,0" data-pp="1,0,.04,0"></canvas>
+    <span class="eyebrow reveal">GEO · Brand Monitoring</span>
+    <h1 class="reveal" style="--d:120ms">当客户去问 AI<br>答案里有<span class="serif">你</span>吗<span class="q">？</span></h1>
+    <p class="hero-sub reveal" style="--d:250ms">方曦把消费者选购时会问的问题，逐一提给 <span class="nw">ChatGPT</span>、<span class="nw">豆包</span>、<span class="nw">DeepSeek</span> 等 AI，<br>留下原始回答和引用来源，标出你被提到、被漏掉、被说错的每一处。</p>
+    <div class="actions reveal" style="--d:400ms"><a class="btn btn-blue" href="#geo">看一份示例 <span class="arr">→</span></a><a class="btn btn-grey" href="#faq">常见问题</a></div>
+    <p class="marquee-label reveal" style="--d:550ms">规划覆盖的 AI 平台</p>
+    <div class="marquee reveal" style="--d:550ms"><div class="marquee-track">
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+    </div></div>
+  </section>
+
+  <div class="features">
+  <section class="max feature" id="geo">
+    <div class="copy reveal">
+      <span class="tag">GEO 品牌监测</span>
+      <h2>同一个问题<br>问遍主流 AI</h2>
+      <p class="lead">“小户型开放式厨房，集成灶选哪个牌子好？”这样的问题，我们按人群、场景和预算成批设计，逐个提给各家 AI，记下谁提到了你、排在第几、和谁一起被推荐。</p>
+      <ul class="steps">
+        <li><b>01</b>按人群、场景、预算写出选购问题</li>
+        <li><b>02</b>在各家 AI 上提问，保存完整回答、引用来源和采集时间</li>
+        <li><b>03</b>标出被提到的位置、同时出现的品牌和被漏掉的问题</li>
+      </ul>
+      <a class="btn btn-blue" href="#faq">了解做法 <span class="arr">→</span></a>
+    </div>
+    <div class="mock reveal" style="--d:200ms" data-hover>
+      <canvas data-scene="fold"></canvas>
+      <div class="ui">
+        <div class="ui-chips"><span class="ui-chip"><i></i>DeepSeek · 第 2 位提及</span><span class="ui-chip"><i></i>腾讯元宝 · 第 1 位提及</span><span class="ui-chip off"><i></i>豆包 · 未提及</span></div>
+        <div class="ui-well"><small>DeepSeek 的回答 · 采集于 10:42</small>小户型开放式厨房，优先看吸烟效果和噪音。常被推荐的有 A 品牌、<mark>你的品牌</mark>和 C 品牌……</div>
+        <div class="ui-input"><b>小户型开放式厨房，集成灶选哪个牌子好？</b><span class="ui-send" aria-hidden="true">↑</span></div>
+      </div>
+      <span class="demo-tag">示例 · 品牌为虚构</span>
+    </div>
+  </section>
+
+  <section class="max feature flip" id="safety">
+    <div class="copy reveal">
+      <span class="tag">品牌安全</span>
+      <h2>说错的、冒充的<br>都标出来</h2>
+      <p class="lead">价格写错、引用了长得像官网的站点、帖子里的说法和事实冲突。我们保存原文、来源链接和页面快照，逐条标给你核验，再按同样的条件定期复测。</p>
+      <a class="btn btn-blue" href="#faq">了解做法 <span class="arr">→</span></a>
+    </div>
+    <div class="mock at-r reveal" style="--d:200ms" data-hover>
+      <canvas data-scene="fan"></canvas>
+      <div class="ui">
+        <div class="ui-well ui-head"><span>豆包的回答</span><span class="flag">待你核验</span></div>
+        <span class="ui-label">我们标出的问题</span>
+        <p class="ui-text">价格写成 3999 元，官网标价 4599 元；引用的 <code>yourbrand<s>-shop</s>.example</code> 和官网域名只差几个字，疑似仿冒站点。</p>
+        <div class="ui-files"><span>原文</span><span>来源链接</span><span>页面快照</span><span>复测 · 每两周</span></div>
+      </div>
+      <span class="demo-tag">示例 · 域名为虚构</span>
+    </div>
+  </section>
+
+  <section class="max feature" id="pollux">
+    <div class="copy reveal">
+      <span class="tag">Pollux 用户洞察 · 开发中</span>
+      <h2>从用户的原话里<br>读出购买动机</h2>
+      <p class="lead">Pollux 读用户评论和访谈，把零散的原话归到购买动机、顾虑和使用场景下，每条结论都能追回原话。先从厨房家电做起。</p>
+      <a class="btn btn-blue" href="#faq">了解进展 <span class="arr">→</span></a>
+    </div>
+    <div class="mock reveal" style="--d:200ms" data-hover>
+      <canvas data-scene="slab"></canvas>
+      <div class="ui">
+        <div class="ui-well"><small>研究问题</small>第一次买洗碗机，最在意什么？</div>
+        <div class="ui-quote">“家里橱柜是旧的，最怕<u>装不进去</u>。”<em>安装空间</em></div>
+        <div class="ui-quote">“锅碗多的时候，<u>大盘子能不能放</u>才是关键。”<em>日常餐具</em></div>
+        <div class="ui-quote">“滤网要不要天天洗？<u>维护麻不麻烦</u>？”<em>使用维护</em></div>
+      </div>
+      <span class="demo-tag">示例 · 引文为虚构</span>
+    </div>
+  </section>
+  </div>
+
+  <section class="max team" id="people">
+    <div class="lp-head">
+      <div class="reveal"><span class="tag">团队</span><h2>这件事<br>由一群研究者来做</h2></div>
+      <div class="side reveal" style="--d:150ms"><p><span class="nw">成员来自计算机、人工智能和信息系统等方向。</span><br><span class="nw">做法和做研究一样：先取证，再下结论。</span></p><a class="btn btn-blue" href="#faq">常见问题 <span class="arr">→</span></a></div>
+    </div>
+    <div class="people">
+      <div class="person reveal"><div class="ava" style="--a:10deg">李</div><span class="tag">联合创始人</span><h3>李佑华</h3><p>香港城市大学金融决策分析与运筹学博士</p></div>
+      <div class="person reveal" style="--d:100ms"><div class="ava" style="--a:100deg">倪</div><span class="tag">首席科学家</span><h3>倪泳鑫</h3><p>波士顿大学博士</p></div>
+      <div class="person reveal" style="--d:200ms"><div class="ava" style="--a:190deg">栾</div><span class="tag">总架构师</span><h3>栾吉宁</h3><p>中国科学技术大学商科博士</p></div>
+      <div class="person reveal" style="--d:300ms"><div class="ava" style="--a:280deg">方</div><span class="tag">首席量化研究员</span><h3>方新宇</h3><p>中国科学技术大学博士</p></div>
+      <div class="person reveal"><div class="ava" style="--a:60deg">涂</div><span class="tag">战略总监</span><h3>涂文哲</h3><p>电子科技大学博士</p></div>
+      <div class="person reveal" style="--d:100ms"><div class="ava" style="--a:150deg">王</div><span class="tag">首席算法工程师</span><h3>王昕</h3><p>电子科技大学硕士</p></div>
+      <div class="person reveal" style="--d:200ms"><div class="ava" style="--a:240deg">李</div><span class="tag">专家团队</span><h3>李春晓</h3><p>中国科学技术大学特任副教授</p></div>
+      <div class="person reveal" style="--d:300ms"><div class="ava" style="--a:330deg">王</div><span class="tag">专家团队</span><h3>王茂林</h3><p>香港城市大学 HKAI-Sci 研究助理教授</p></div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <span class="eyebrow reveal">FAQ</span>
+    <h2 class="reveal">先回答几个常见问题</h2>
+    <div class="faq-box reveal">
+      <div class="faq-item open"><button class="faq-q" type="button" aria-expanded="true">什么是 GEO？<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></i></button><div class="faq-a"><div><p>GEO 即生成式引擎优化，关注品牌在 AI 回答里的样子：AI 有没有提到品牌、怎么描述它，以及引用了哪些来源。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">方曦的 GEO 具体做什么？<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></i></button><div class="faq-a"><div><p>结合人群、场景与预算设计提问，记录主流 AI 的完整回答、引用来源与采集时间，标出提到、遗漏和说错的地方，并排查可疑来源与事实冲突。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">覆盖哪些 AI 平台？<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></i></button><div class="faq-a"><div><p>规划覆盖 ChatGPT、DeepSeek、豆包、腾讯元宝、通义千问、文心一言等平台，具体范围在合作时确认。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">现在可以使用吗？<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></i></button><div class="faq-a"><div><p>GEO 与 Pollux 仍在筹备。官网上的回答、报告和引文都是示例，不代表真实测评结果。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">会承诺 AI 一定推荐我们吗？<i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></i></button><div class="faq-a"><div><p>不会。我们提供可追溯的证据和改进清单，帮你判断先改什么；具体交付以合作约定为准。</p></div></div></div>
+    </div>
+  </section>
+
+  <footer class="footer max" id="contact">
+    <div class="cta reveal">
+      <canvas data-scene="foot" data-res=".7" data-p="1.15,.05,.1,0" data-pp="1.1,0,.12,0"></canvas>
+      <h2><span class="nw">想知道</span> <span class="nw">AI 怎么<span class="serif">说你</span><span class="q">？</span></span></h2>
+      <p>合作联系方式即将公布</p>
+      <div class="actions"><a class="btn btn-blue" href="#geo">看一份示例 <span class="arr">→</span></a><a class="btn btn-grey" href="#faq">常见问题</a></div>
+    </div>
+    <div class="links">
+      <div class="brandcol"><a class="logo" href="#top"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 36h34M13 31a11 11 0 0 1 22 0M24 5v8M6 15l6 6M42 15l-6 6" fill="none" stroke="#111827" stroke-width="2.6" stroke-linecap="round"/></svg>方曦<small>FANGXI</small></a><p>问清楚，存下来，标出来。</p></div>
+      <div><h3>服务</h3><a class="item" href="#geo">GEO 品牌监测</a><a class="item" href="#safety">品牌安全</a><a class="item" href="#pollux">Pollux 用户洞察</a></div>
+      <div><h3>了解</h3><a class="item" href="#people">团队</a><a class="item" href="#faq">常见问题</a></div>
+      <div><h3>联系</h3><span class="item">合作联系方式即将公布</span></div>
+    </div>
+    <div class="bottom"><span>© 2026 方曦 FANGXI</span><span>GEO 与 Pollux 筹备中 · 页面示例不代表真实测评</span></div>
+  </footer>
+
+<script src="render.js"></script>
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 20);
+  onScroll(); addEventListener('scroll', onScroll, { passive: true });
+  const burger = nav.querySelector('.burger');
+  const setOpen = open => { nav.classList.toggle('open', open); burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单'); };
+  burger.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  if (document.documentElement.classList.contains('static')) document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => { const item = q.parentElement; item.classList.toggle('open'); q.setAttribute('aria-expanded', String(item.classList.contains('open'))); }));
+</script>
+</body>
+</html>

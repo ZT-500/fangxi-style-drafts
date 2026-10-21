@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方曦 FANGXI — 设计稿（参照 ClarionAI）</title>
+<style>
+  /* Follows the ClarionAI spec section by section: pure black, white text, #1F1F22 pills, #1C1C1E frosted cards, 1000ms fade-up reveals. */
+  :root {
+    --gray-300: #d1d5db; --gray-400: #a1a1aa; --gray-500: #71717a;
+    --pill: #1f1f22; --pill-hover: #2a2a2d; --card: rgba(28, 28, 30, .9);
+    --line: rgba(255, 255, 255, .1); --line-soft: rgba(255, 255, 255, .05); --well: rgba(255, 255, 255, .05);
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Inter", sans-serif;
+    --serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", STSong, SimSun, serif;
+    --mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: #000; color: #fff; font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .max { max-width: 1280px; margin-inline: auto; padding-inline: 24px; }
+  .nw { white-space: nowrap; }
+  /* The one serif accent per headline, at a weight that holds up next to the sans. */
+  .serif { font-family: var(--serif); font-weight: 600; letter-spacing: .02em; }
+  .pill { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 12px 22px; border-radius: 999px; font-size: 15px; font-weight: 500; line-height: 1.2; white-space: nowrap; transition: background-color .2s; }
+  .pill-white { background: #fff; color: #000; }
+  .pill-dark { background: var(--pill); border: 1px solid var(--line-soft); color: #fff; }
+  .pill-white:hover { background: #e5e5e5; } .pill-dark:hover { background: var(--pill-hover); }
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s ease, transform 1s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+  canvas.no-gl { background: radial-gradient(120% 70% at 72% 80%, #c2410c, #431407 42%, #000 72%); }
+
+  /* 1. Navigation: transparent, then black/80 with blur after 20px. */
+  .nav { position: fixed; inset: 0 0 auto; z-index: 50; transition: background-color .3s; }
+  .nav.scrolled, .nav.open { background: rgba(0, 0, 0, .8); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .nav .max { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 600; letter-spacing: .06em; color: #fff; }
+  .logo svg { width: 30px; height: 30px; flex-shrink: 0; }
+  .logo small { font-size: 11px; font-weight: 500; letter-spacing: .2em; color: var(--gray-400); }
+  .nav-links { display: flex; gap: 36px; font-size: 14px; font-weight: 500; color: var(--gray-300); }
+  .nav-links a:hover { color: #fff; }
+  .nav-right { display: flex; align-items: center; gap: 10px; }
+  .nav-right .pill { padding: 12px 20px; font-size: 14px; }
+  .burger { display: none; width: 44px; height: 44px; padding: 0 12px; border: 1px solid var(--line-soft); border-radius: 999px; background: var(--pill); cursor: pointer; }
+  .burger span { display: block; height: 1.5px; margin: 6px 0; background: #fff; border-radius: 2px; transition: transform .25s; }
+  .nav.open .burger span:first-child { transform: translateY(3.75px) rotate(45deg); }
+  .nav.open .burger span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+  /* 2. Hero */
+  .hero { position: relative; z-index: 0; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 128px 0 80px; overflow: hidden; }
+  .static .hero { min-height: 940px; }
+  .static .reveal { transition: none; }
+  .hero > canvas, .footer > canvas, .mock > canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  .hero > canvas { opacity: .9; }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse 42% 26% at 50% 44%, rgba(0,0,0,.3), transparent 72%), linear-gradient(180deg, rgba(0,0,0,.3), transparent 45%, #000); pointer-events: none; }
+  .hero h1 { margin: 0 0 24px; padding-inline: 16px; font-size: 76px; line-height: 1.12; font-weight: 500; letter-spacing: -.025em; text-align: center; text-wrap: balance; }
+  .hero-sub { max-width: 720px; margin: 0; padding-inline: 24px; font-size: 16px; line-height: 1.75; color: #c4c4cc; text-align: center; text-wrap: balance; text-shadow: 0 0 14px rgba(0,0,0,.7); }
+  .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 36px; }
+  .marquee-label { margin: 96px 0 32px; font-size: 14px; font-weight: 500; color: var(--gray-500); text-align: center; }
+  .marquee { width: 100%; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent); }
+  .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+  .marquee-track span { flex-shrink: 0; padding: 0 36px; font-size: 26px; font-weight: 600; letter-spacing: -.01em; color: rgba(255,255,255,.55); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+
+  /* 3–6. Feature rows, alternating text and mockup */
+  .feature { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; padding-block: 96px; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+  .badge::before { content: "✦"; }
+  .badge.yellow { color: #facc15; } .badge.green { color: #4ade80; } .badge.blue { color: #7dd3fc; } .badge.violet { color: #c4b5fd; }
+  .feature h2 { margin: 20px 0 0; font-size: 56px; line-height: 1.15; font-weight: 600; letter-spacing: -.02em; text-wrap: balance; }
+  .feature p.lead { max-width: 24em; margin: 24px 0 32px; font-size: 17px; line-height: 1.8; color: var(--gray-400); }
+  .mock { position: relative; z-index: 0; aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; padding: 32px; border: 1px solid var(--line); border-radius: 24px; overflow: hidden; }
+  .mock::after { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(0,0,0,.2); }
+  .ui { width: 100%; max-width: 480px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); box-shadow: 0 30px 60px -20px rgba(0,0,0,.7); font-size: 14px; line-height: 1.75; color: #e4e4e7; }
+  .ui-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ui-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 10px; background: rgba(255,255,255,.07); font-size: 13px; white-space: nowrap; }
+  .ui-chip i { width: 6px; height: 6px; border-radius: 50%; background: #facc15; }
+  .ui-chip.off { color: var(--gray-400); } .ui-chip.off i { background: var(--gray-500); }
+  .ui-well { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: var(--well); }
+  .ui-well:first-child { margin-top: 0; }
+  .ui-well small { display: block; margin-bottom: 4px; font-size: 12px; color: var(--gray-400); }
+  .ui mark { padding: 1px 6px; border-radius: 5px; background: rgba(250,204,21,.18); color: #fde68a; box-shadow: inset 0 -2px 0 #facc15; white-space: nowrap; }
+  .ui-input { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding: 8px 8px 8px 16px; border-radius: 999px; background: rgba(255,255,255,.07); color: #fff; }
+  .ui-input b { flex: 1; font-weight: 400; }
+  .ui-send { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: #fff; color: #000; font-size: 15px; }
+  .ui-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .ui-label { display: block; margin: 14px 2px 4px; font-size: 12px; color: var(--gray-400); }
+  .ui-text { padding: 0 2px; }
+  .flag { padding: 2px 10px; border-radius: 999px; font-size: 12px; white-space: nowrap; color: #fca5a5; background: rgba(248,113,113,.14); }
+  .ui code { font-family: var(--mono); font-size: 13px; color: #fff; white-space: nowrap; }
+  .ui code s { text-decoration: none; color: #f87171; }
+  .ui-row { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: baseline; padding: 10px 2px; border-bottom: 1px solid var(--line-soft); }
+  .ui-row:last-child { border-bottom: 0; }
+  .ui-row span:last-child { color: var(--gray-400); text-align: right; }
+  .ui-quote { padding: 10px 2px; border-bottom: 1px solid var(--line-soft); }
+  .ui-quote:last-child { border-bottom: 0; }
+  .ui-quote u { text-decoration: none; box-shadow: inset 0 -2px 0 #7dd3fc; }
+  .ui-quote em { margin-left: 8px; font-style: normal; font-size: 12px; color: #7dd3fc; white-space: nowrap; }
+  .demo-tag { position: absolute; right: 12px; bottom: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); font-size: 12px; color: rgba(255,255,255,.8); }
+
+  /* 7. FAQ */
+  .faq { max-width: 768px; margin: 0 auto; padding: 128px 24px; }
+  .faq h2 { margin: 0 0 48px; font-size: 48px; line-height: 1.2; font-weight: 600; letter-spacing: -.02em; text-align: center; text-wrap: balance; }
+  .faq-box { border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.035); }
+  .faq-item + .faq-item { border-top: 1px solid var(--line); }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; padding: 24px; border: 0; background: none; text-align: left; font-size: 16px; font-weight: 500; cursor: pointer; }
+  .faq-q svg { flex-shrink: 0; width: 22px; height: 22px; color: var(--gray-400); transition: transform .3s; }
+  .faq-item.open .faq-q svg { transform: rotate(45deg); }
+  .faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .faq-item.open .faq-a { grid-template-rows: 1fr; }
+  .faq-a > div { overflow: hidden; }
+  .faq-a p { margin: 0; padding: 0 24px 24px; font-size: 14px; line-height: 1.85; color: var(--gray-400); }
+
+  /* 8. Footer */
+  .footer { position: relative; z-index: 0; padding: 128px 24px 40px; border-top: 1px solid var(--line-soft); overflow: hidden; }
+  .footer > canvas { opacity: .6; }
+  .footer::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #000 0%, rgba(0,0,0,.55) 45%, rgba(0,0,0,.85) 100%); pointer-events: none; }
+  .cta { margin-bottom: 128px; text-align: center; }
+  .cta h2 { margin: 0 0 32px; font-size: 56px; line-height: 1.2; font-weight: 600; letter-spacing: -.02em; }
+  .cta .hero-actions { margin-top: 0; }
+  .links { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; max-width: 1232px; margin: 0 auto 96px; }
+  .links .logo { margin: 0; }
+  .links h3 { margin: 0 0 18px; font-size: 15px; font-weight: 600; }
+  .links .item { display: block; margin-bottom: 12px; font-size: 14px; color: var(--gray-400); transition: color .2s; }
+  .links a.item:hover { color: #fff; }
+  .brandcol p { margin: 14px 0 0; font-size: 14px; line-height: 1.7; color: var(--gray-400); }
+  .bottom { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px 16px; max-width: 1232px; margin: 0 auto; padding-top: 32px; border-top: 1px solid var(--line-soft); font-size: 12px; color: var(--gray-500); }
+  .bottom b { font-weight: 400; color: var(--gray-300); }
+
+  @media (max-width: 900px) {
+    .nav .max { height: 68px; }
+    .burger { display: block; }
+    .nav-links { display: none; }
+    .nav.open .nav-links { display: flex; flex-direction: column; gap: 2px; position: absolute; top: 64px; left: 16px; right: 16px; padding: 10px; border: 1px solid var(--line); border-radius: 16px; background: rgba(10,10,12,.94); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); font-size: 16px; }
+    .nav.open .nav-links a { padding: 12px 14px; border-radius: 10px; }
+    .nav.open .nav-links a:active { background: rgba(255,255,255,.06); }
+    .nav-right .pill { display: none; }
+    .max { padding-inline: 16px; }
+    .hero { padding-top: 112px; }
+    .static .hero { min-height: 844px; }
+    .hero h1 { font-size: clamp(36px, 10.5vw, 48px); }
+    .hero::after { background: radial-gradient(ellipse 150% 28% at 50% 47%, rgba(0,0,0,.62), transparent 74%), linear-gradient(180deg, rgba(0,0,0,.3), transparent 45%, #000); }
+    .hero-sub { color: #e4e4e7; text-shadow: 0 0 2px rgba(0,0,0,.9), 0 0 18px rgba(0,0,0,.85); }
+    .hero-sub br { display: none; }
+    .marquee-label { margin-top: 72px; color: #d4d4d8; text-shadow: 0 0 2px rgba(0,0,0,.8), 0 0 14px rgba(0,0,0,.8); }
+    .marquee-track span { text-shadow: 0 0 16px rgba(0,0,0,.6); }
+    .marquee-track span { padding: 0 22px; font-size: 20px; }
+    .feature { grid-template-columns: 1fr; gap: 36px; padding-block: 64px; }
+    .feature .mock { order: 2; aspect-ratio: auto; align-items: flex-end; padding: 112px 14px 52px; }
+    .ui { max-width: 100%; }
+    .feature h2 { font-size: 38px; }
+    .feature p.lead { font-size: 16px; }
+    .ui-quote em { display: block; margin: 4px 0 0; }
+    .ui-row { grid-template-columns: 1fr; gap: 0; }
+    .ui-row span:last-child { text-align: left; }
+    .faq { padding: 88px 16px; }
+    .faq h2 { font-size: 32px; }
+    .faq-q { padding: 20px; }
+    .faq-a p { padding: 0 20px 20px; }
+    .footer { padding: 96px 16px 32px; }
+    .cta { margin-bottom: 88px; }
+    .cta h2 { font-size: clamp(28px, 8.2vw, 36px); }
+    .links { grid-template-columns: 1fr 1fr; gap: 28px 16px; margin-bottom: 56px; }
+    .links .brandcol { grid-column: 1 / -1; }
+    .links h3 { margin-bottom: 6px; }
+    .links .item { margin: 0; padding: 9px 0; }
+    .bottom { flex-direction: column; gap: 6px; }
+  }
+</style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="max">
+      <a class="logo" href="#"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 36h34M13 31a11 11 0 0 1 22 0M24 5v8M6 15l6 6M42 15l-6 6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>方曦<small>FANGXI</small></a>
+      <nav class="nav-links" id="nav-links"><a href="#geo">GEO 监测</a><a href="#safety">品牌安全</a><a href="#pollux">Pollux</a><a href="#people">团队</a><a href="#faq">常见问题</a></nav>
+      <div class="nav-right"><a class="pill pill-dark" href="#contact">联系我们</a><button class="burger" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button></div>
+    </div>
+  </header>
+
+  <section class="hero" id="about">
+    <canvas data-silk data-scale=".8" data-gain="1.35" data-k2="2.0,2.2,-.2,1.2" data-k2p="2.0,2.2,-.2,.3" data-drop=".3"></canvas>
+    <h1 class="reveal">当客户去问 AI，<br>答案里有<span class="serif">你吗</span>？</h1>
+    <p class="hero-sub reveal">方曦把消费者选购时会问的问题，逐一提给 <span class="nw">ChatGPT</span>、<span class="nw">豆包</span>、<span class="nw">DeepSeek</span> 等 AI，<br>留下原始回答和引用来源，标出你被提到、被漏掉、被说错的每一处。</p>
+    <div class="hero-actions reveal"><a class="pill pill-white" href="#geo">看一份示例</a><a class="pill pill-dark" href="#faq">常见问题</a></div>
+    <p class="marquee-label reveal">规划覆盖的 AI 平台</p>
+    <div class="marquee reveal"><div class="marquee-track">
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+      <span>ChatGPT</span><span>DeepSeek</span><span>豆包</span><span>腾讯元宝</span><span>通义千问</span><span>文心一言</span>
+    </div></div>
+  </section>
+
+  <section class="max feature" id="geo">
+    <div class="reveal">
+      <span class="badge yellow">GEO 品牌监测</span>
+      <h2>同一个问题<br>问遍主流 AI</h2>
+      <p class="lead">“小户型开放式厨房，集成灶选哪个牌子好？”这样的问题，我们按人群、场景和预算成批设计，逐个提给各家 AI，记下谁提到了你、排在第几、和谁一起被推荐。</p>
+      <a class="pill pill-dark" href="#faq">了解做法</a>
+    </div>
+    <div class="mock reveal">
+      <canvas data-silk data-tone="iris" data-shift="1.3,-.6" data-k="2.4,2.6,14,.06" data-k2="1.8,4.5,-.09,1.2" data-gain="1.25" data-lift=".25"></canvas>
+      <div class="ui">
+        <div class="ui-chips"><span class="ui-chip"><i></i>DeepSeek · 第 2 位提及</span><span class="ui-chip"><i></i>腾讯元宝 · 第 1 位提及</span><span class="ui-chip off"><i></i>豆包 · 未提及</span></div>
+        <div class="ui-well"><small>DeepSeek 的回答</small>小户型开放式厨房，优先看吸烟效果和噪音。常被推荐的有 A 品牌、<mark>你的品牌</mark>和 C 品牌……</div>
+        <div class="ui-input"><b>小户型开放式厨房，集成灶选哪个牌子好？</b><span class="ui-send" aria-hidden="true">↑</span></div>
+      </div>
+      <span class="demo-tag">示例 · 品牌为虚构</span>
+    </div>
+  </section>
+
+  <section class="max feature" id="safety">
+    <div class="mock reveal">
+      <canvas data-silk data-tone="iris" data-shift="-.8,1.1" data-k="2.4,2.6,14,.06" data-k2="1.8,4.5,-.09,1.2" data-gain="1.25" data-lift=".25"></canvas>
+      <div class="ui">
+        <div class="ui-well ui-head"><span>豆包的回答</span><span class="flag">说错了</span></div>
+        <span class="ui-label">我们标出的问题</span>
+        <p class="ui-text" style="margin:0">价格写成 3999 元，官网标价 4599 元；引用的 <code>yourbrand<s>-shop</s>.example</code> 和官网域名只差几个字，疑似仿冒站点。</p>
+      </div>
+      <span class="demo-tag">示例 · 域名为虚构</span>
+    </div>
+    <div class="reveal">
+      <span class="badge green">品牌安全</span>
+      <h2>说错的、冒充的<br>都标出来</h2>
+      <p class="lead">价格写错、引用了长得像官网的站点、帖子里的说法和事实冲突。我们保存原文、来源链接和页面快照，逐条标给你核验，再按同样的条件定期复测。</p>
+      <a class="pill pill-dark" href="#faq">了解做法</a>
+    </div>
+  </section>
+
+  <section class="max feature" id="pollux">
+    <div class="reveal">
+      <span class="badge blue">Pollux 用户洞察</span>
+      <h2>从用户的原话里<br>读出购买动机</h2>
+      <p class="lead">Pollux 读用户评论和访谈，把零散的原话归到动机、顾虑和使用场景下，每条结论都能追回原话。目前先做厨房家电，仍在开发中。</p>
+      <a class="pill pill-dark" href="#faq">了解进展</a>
+    </div>
+    <div class="mock reveal">
+      <canvas data-silk data-shift="2.1,.4" data-k2="1.5,2.2,.05,1.3" data-lift=".2"></canvas>
+      <div class="ui">
+        <div class="ui-well"><small>研究问题</small>第一次买洗碗机，最在意什么？</div>
+        <div class="ui-quote">“家里橱柜是旧的，最怕<u>装不进去</u>。”<em>安装空间</em></div>
+        <div class="ui-quote">“锅碗多的时候，<u>大盘子能不能放</u>才是关键。”<em>日常餐具</em></div>
+        <div class="ui-quote">“滤网要不要天天洗？<u>维护麻不麻烦</u>？”<em>使用维护</em></div>
+      </div>
+      <span class="demo-tag">示例 · 引文为虚构</span>
+    </div>
+  </section>
+
+  <section class="max feature" id="people">
+    <div class="mock reveal">
+      <canvas data-silk data-shift="-1.4,.8" data-k2="1.6,2.2,-.05,1.1" data-lift=".2"></canvas>
+      <div class="ui">
+        <div class="ui-row"><span>李佑华 · 联合创始人</span><span>香港城市大学博士</span></div>
+        <div class="ui-row"><span>倪泳鑫 · 首席科学家</span><span>波士顿大学博士</span></div>
+        <div class="ui-row"><span>栾吉宁 · 总架构师</span><span>中国科学技术大学商科博士</span></div>
+        <div class="ui-row"><span>方新宇 · 首席量化研究员</span><span>中国科学技术大学博士</span></div>
+        <div class="ui-row"><span>涂文哲 · 战略总监</span><span>电子科技大学博士</span></div>
+        <div class="ui-row"><span>李春晓 · 专家团队</span><span>中国科学技术大学特任副教授</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <span class="badge violet">团队</span>
+      <h2>这件事<br>由一群研究者来做</h2>
+      <p class="lead">成员来自计算机、人工智能和信息系统等方向。我们用做研究的方法做这件事：先取证，再下结论。</p>
+      <a class="pill pill-dark" href="#contact">完整团队</a>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <h2 class="reveal"><span class="nw">你可能想问的，</span><span class="nw">我们先答了</span></h2>
+    <div class="faq-box reveal">
+      <div class="faq-item open"><button class="faq-q" type="button" aria-expanded="true">什么是 GEO？<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button><div class="faq-a"><div><p>GEO 即生成式引擎优化，关注品牌在 AI 回答里的样子：AI 有没有提到品牌、怎么描述它，以及引用了哪些来源。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">方曦的 GEO 具体做什么？<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button><div class="faq-a"><div><p>结合人群、场景与预算设计提问，记录主流 AI 的完整回答、引用来源与采集时间，标出提到、遗漏和说错的地方，并排查可疑来源与事实冲突。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">覆盖哪些 AI 平台？<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button><div class="faq-a"><div><p>规划覆盖 ChatGPT、DeepSeek、豆包、腾讯元宝、通义千问、文心一言等平台，具体范围在合作时确认。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">现在可以使用吗？<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button><div class="faq-a"><div><p>GEO 与 Pollux 仍在筹备。官网上的回答、报告和引文都是示例，不代表真实测评结果。</p></div></div></div>
+      <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">会承诺 AI 一定推荐我们吗？<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button><div class="faq-a"><div><p>不会。我们提供可追溯的证据和改进清单，帮你判断先改什么；具体交付以合作约定为准。</p></div></div></div>
+    </div>
+  </section>
+
+  <footer class="footer" id="contact">
+    <canvas data-silk data-gain="1.15" data-scale=".8" data-shift="-.6,-.3" data-k2="2.0,2.2,-.2,1.0" data-k2p="2.0,2.2,-.2,.3"></canvas>
+    <div class="cta reveal">
+      <h2>想知道 AI 怎么<span class="nw"><span class="serif">说你</span>？</span></h2>
+      <div class="hero-actions"><a class="pill pill-white" href="#geo">看一份示例</a><a class="pill pill-dark" href="#faq">常见问题</a></div>
+    </div>
+    <div class="links">
+      <div class="brandcol"><a class="logo" href="#"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 36h34M13 31a11 11 0 0 1 22 0M24 5v8M6 15l6 6M42 15l-6 6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>方曦</a><p>问清楚，存下来，标出来。</p></div>
+      <div><h3>服务</h3><a class="item" href="#geo">GEO 品牌监测</a><a class="item" href="#safety">品牌安全</a><a class="item" href="#pollux">Pollux 用户洞察</a></div>
+      <div><h3>条款</h3><span class="item">隐私政策</span><span class="item">使用条款</span><span class="item">Cookie 政策</span></div>
+      <div><h3>联系</h3><a class="item" href="#people">团队</a><span class="item">合作联系方式即将公布</span></div>
+    </div>
+    <div class="bottom"><span>© 2026 方曦 <b>FANGXI</b></span><span>GEO 服务筹备中</span><span>页面示例不代表真实测评</span></div>
+  </footer>
+
+<script src="silk.js"></script>
+<script>
+  const nav = document.getElementById('nav');
+  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 20);
+  onScroll(); addEventListener('scroll', onScroll, { passive: true });
+  const burger = nav.querySelector('.burger');
+  const setOpen = open => { nav.classList.toggle('open', open); burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? '关闭菜单' : '打开菜单'); };
+  burger.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  nav.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  if (new URLSearchParams(location.search).has('static')) { document.documentElement.classList.add('static'); document.querySelectorAll('.reveal').forEach(el => el.classList.add('in')); }
+  document.querySelectorAll('.faq-q').forEach(q => q.addEventListener('click', () => { const item = q.parentElement; item.classList.toggle('open'); q.setAttribute('aria-expanded', String(item.classList.contains('open'))); }));
+</script>
+</body>
+</html>

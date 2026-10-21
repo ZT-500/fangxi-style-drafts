@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>方曦官网风格稿</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Layout: a quiet selection board. Two groups (dark, light), one card per style: desktop shot with the phone shot tucked in, then letter, name, pitch, what moves, open. */
+  :root {
+    --bg: #f3f3f1; --surface: #ffffff; --ink: #17171a; --muted: #6b6b72; --line: #e2e2de; --accent: #1f4fd8; --chip: #ececea;
+    --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+    --letter: "Songti SC", "Noto Serif SC", Georgia, "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #111113; --surface: #1a1a1d; --ink: #f1f1f2; --muted: #9a9aa2; --line: #2a2a2f; --accent: #7aa2ff; --chip: #26262b; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg: #111113; --surface: #1a1a1d; --ink: #f1f1f2; --muted: #9a9aa2; --line: #2a2a2f; --accent: #7aa2ff; --chip: #26262b; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 56px 80px; }
+  header { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: end; padding-bottom: 40px; border-bottom: 1px solid var(--line); }
+  .eyebrow { margin: 0 0 14px; font-size: 13px; letter-spacing: .12em; color: var(--muted); }
+  h1 { margin: 0; font-size: clamp(32px, 5vw, 52px); line-height: 1.15; font-weight: 600; letter-spacing: -.01em; text-wrap: balance; }
+  .how { margin: 0; display: grid; gap: 10px; font-size: 15px; line-height: 1.75; color: var(--muted); }
+  .how p { margin: 0; text-wrap: pretty; }
+  .how b { color: var(--ink); font-weight: 600; }
+  .group { margin-top: 56px; }
+  .group-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
+  .group-head h2 { margin: 0; font-size: 22px; font-weight: 600; }
+  .group-head span { font-size: 14px; color: var(--muted); }
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  .card { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+  .shots { position: relative; padding: 14px 14px 0; }
+  .shots .desk { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 10px; border: 1px solid var(--line); background: #000; }
+  .shots .phone { position: absolute; right: 24px; bottom: -26px; width: 23%; max-width: 100%; aspect-ratio: 390 / 844; object-fit: cover; object-position: top; border-radius: 12px; border: 3px solid var(--surface); box-shadow: 0 10px 24px -8px rgba(0,0,0,.35); background: #000; }
+  .body { display: flex; flex-direction: column; gap: 12px; flex: 1; padding: 22px 20px 20px; }
+  .title { display: flex; align-items: baseline; gap: 12px; padding-right: 26%; }
+  .letter { font-family: var(--letter); font-size: 40px; line-height: 1; font-weight: 600; }
+  .name { margin: 0; font-size: 20px; font-weight: 600; }
+  .tone { margin-left: auto; flex-shrink: 0; padding: 3px 10px; border-radius: 999px; background: var(--chip); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .pitch { margin: 0; font-size: 14.5px; line-height: 1.75; text-wrap: pretty; }
+  dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: 13px; line-height: 1.7; }
+  dt { color: var(--muted); white-space: nowrap; }
+  dd { margin: 0; color: var(--ink); text-wrap: pretty; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: auto; padding-top: 6px; }
+  .open { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px; border: 0; border-radius: 999px; background: var(--ink); color: var(--bg); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .open:hover { opacity: .88; }
+  .newtab { font-size: 13px; color: var(--muted); text-underline-offset: 3px; }
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.8; color: var(--muted); }
+  footer p { margin: 0; }
+  /* Full-screen viewer for one style */
+  .viewer { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; background: #000; }
+  .viewer-bar { display: flex; align-items: center; gap: 12px; padding: calc(10px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); background: #111113; color: #f1f1f2; font-size: 14px; }
+  .viewer-bar b { font-weight: 600; }
+  .viewer-bar .sp { flex: 1; }
+  .viewer-bar a, .viewer-bar button { color: #f1f1f2; }
+  .viewer-bar button { min-height: 40px; padding: 8px 16px; border: 1px solid #3a3a40; border-radius: 999px; background: transparent; font: inherit; font-size: 14px; cursor: pointer; }
+  .viewer-bar .nav-btn { padding: 8px 12px; }
+  .viewer iframe { flex: 1; width: 100%; border: 0; background: #000; }
+  @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } header { grid-template-columns: minmax(0, 1fr); gap: 20px; } }
+  @media (max-width: 640px) { .grid { grid-template-columns: minmax(0, 1fr); } .wrap { padding-block: 36px 56px; } .viewer-bar .hide-s { display: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">方曦 FANGXI · 官网设计稿</p>
+      <h1>六套官网风格，请选一套</h1>
+    </div>
+    <div class="how">
+      <p>每套都是完整的一页：首屏、业务介绍、团队、常见问题、页脚。点<b>「打开完整页面」</b>从头滚到底看，<b>最好用电脑看</b>，动效更完整。</p>
+      <p>选好后告诉我们字母，比如“我选 C”。也可以组合，比如“C 的首屏，配 D 的颜色”。</p>
+    </div>
+  </header>
+
+  <section class="group" aria-labelledby="g-dark">
+    <div class="group-head"><h2 id="g-dark">黑色系</h2><span>A · B · C</span></div>
+    <div class="grid">
+      <article class="card">
+        <div class="shots"><img class="desk" src="thumbs/amber-silk-desk.jpg" alt="流金丝绸 电脑首屏截图" loading="lazy"><img class="phone" src="thumbs/amber-silk-phone.jpg" alt="流金丝绸 手机首屏截图" loading="lazy"></div>
+        <div class="body">
+          <div class="title"><span class="letter">A</span><h3 class="name">流金丝绸</h3><span class="tone">黑底</span></div>
+          <p class="pitch">黑底，一整块流动的金色丝绸，标题居中。大气、克制，是上一轮已经给大家看过的那套。</p>
+          <dl><dt>会动的</dt><dd>丝绸一直缓慢流动，光泽随鼠标变化；往下滚，各板块依次浮现</dd><dt>参考</dt><dd>ClarionAI</dd></dl>
+          <div class="actions"><button class="open" type="button" data-open="amber-silk" data-name="A · 流金丝绸">打开完整页面</button><a class="newtab" href="amber-silk/index.html" target="_blank" rel="noopener">新标签页打开</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="shots"><img class="desk" src="thumbs/amber-crystal-desk.jpg" alt="琥珀晶体 电脑首屏截图" loading="lazy"><img class="phone" src="thumbs/amber-crystal-phone.jpg" alt="琥珀晶体 手机首屏截图" loading="lazy"></div>
+        <div class="body">
+          <div class="title"><span class="letter">B</span><h3 class="name">琥珀晶体</h3><span class="tone">黑底</span></div>
+          <p class="pitch">黑底，一颗琥珀色多面玻璃球在标题旁慢慢转，配白灰两色的大标题。安静、贵气，像高端设计工作室。</p>
+          <dl><dt>会动的</dt><dd>玻璃球旋转并朝鼠标倾斜；下方有暗色光带飘动；鼠标放到卡片上会涌出彩色流光</dd><dt>参考</dt><dd>Aura Branding</dd></dl>
+          <div class="actions"><button class="open" type="button" data-open="amber-crystal" data-name="B · 琥珀晶体">打开完整页面</button><a class="newtab" href="amber-crystal/index.html" target="_blank" rel="noopener">新标签页打开</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="shots"><img class="desk" src="thumbs/deep-mist-desk.jpg" alt="深海光雾 电脑首屏截图" loading="lazy"><img class="phone" src="thumbs/deep-mist-phone.jpg" alt="深海光雾 手机首屏截图" loading="lazy"></div>
+        <div class="body">
+          <div class="title"><span class="letter">C</span><h3 class="name">深海光雾</h3><span class="tone">深蓝底</span></div>
+          <p class="pitch">深蓝夜色，右侧一条蓝色烟雾带里穿着金色细丝和上千颗火星，左边是很重的白色大字。六套里科技感最强。</p>
+          <dl><dt>会动的</dt><dd>烟雾和火星一直流动，鼠标靠近会把它们拨开；往下还有小的烟雾点缀，以及滚动时点亮的金色进度线</dd><dt>参考</dt><dd>Lumina</dd></dl>
+          <div class="actions"><button class="open" type="button" data-open="deep-mist" data-name="C · 深海光雾">打开完整页面</button><a class="newtab" href="deep-mist/index.html" target="_blank" rel="noopener">新标签页打开</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="group" aria-labelledby="g-light">
+    <div class="group-head"><h2 id="g-light">白色系</h2><span>D · E · F</span></div>
+    <div class="grid">
+      <article class="card">
+        <div class="shots"><img class="desk" src="thumbs/pearl-white-desk.jpg" alt="珍珠白 电脑首屏截图" loading="lazy"><img class="phone" src="thumbs/pearl-white-phone.jpg" alt="珍珠白 手机首屏截图" loading="lazy"></div>
+        <div class="body">
+          <div class="title"><span class="letter">D</span><h3 class="name">珍珠白</h3><span class="tone">白底</span></div>
+          <p class="pitch">A 的白色版：板块结构一样，换成白底、黑字、一点蓝，靠珍珠丝带和彩色玻璃撑起质感。六套里最稳妥。</p>
+          <dl><dt>会动的</dt><dd>珍珠丝带一直扭动，光泽随鼠标移动；每个板块的玻璃图都在慢慢动，鼠标放上去有反应</dd><dt>参考</dt><dd>LaunchPad + ClarionAI</dd></dl>
+          <div class="actions"><button class="open" type="button" data-open="pearl-white" data-name="D · 珍珠白">打开完整页面</button><a class="newtab" href="pearl-white/index.html" target="_blank" rel="noopener">新标签页打开</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="shots"><img class="desk" src="thumbs/flow-white-desk.jpg" alt="流光白 电脑首屏截图" loading="lazy"><img class="phone" src="thumbs/flow-white-phone.jpg" alt="流光白 手机首屏截图" loading="lazy"></div>
+        <div class="body">
+          <div class="title"><span class="letter">E</span><h3 class="name">流光白</h3><span class="tone">白底 · 彩色</span></div>
+          <p class="pitch">首屏是一整块缓慢流动的粉紫、柠檬黄渐变，下面用玻璃、酒红液体和金色金属的图来讲四个方向。明亮、轻盈。</p>
+          <dl><dt>会动的</dt><dd>渐变像液体一样慢慢流动；玻璃图缓慢旋转，鼠标放上去会加速；有一个跟随鼠标的圆形光标</dd><dt>参考</dt><dd>AXIOM（Agency Portfolio）</dd></dl>
+          <div class="actions"><button class="open" type="button" data-open="flow-white" data-name="E · 流光白">打开完整页面</button><a class="newtab" href="flow-white/index.html" target="_blank" rel="noopener">新标签页打开</a></div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="shots"><img class="desk" src="thumbs/lab-type-desk.jpg" alt="大字实验室 电脑首屏截图" loading="lazy"><img class="phone" src="thumbs/lab-type-phone.jpg" alt="大字实验室 手机首屏截图" loading="lazy"></div>
+        <div class="body">
+          <div class="title"><span class="letter">F</span><h3 class="name">大字实验室</h3><span class="tone">白底</span></div>
+          <p class="pitch">白底，像一块仪表盘，配海报级的黑色巨大字体。一颗白瓷“AI 镜头”跟着鼠标转，页脚是黑底上冒出来的荧光黄 FANGXI。六套里最有个性。</p>
+          <dl><dt>会动的</dt><dd>镜头跟着鼠标转动；鼠标划过会留下会融合的红墨点；滚动时大字横向滑动；页脚 FANGXI 从底部升起</dd><dt>参考</dt><dd>Mundfish + Tenlas</dd></dl>
+          <div class="actions"><button class="open" type="button" data-open="lab-type" data-name="F · 大字实验室">打开完整页面</button><a class="newtab" href="lab-type/index.html" target="_blank" rel="noopener">新标签页打开</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <p>这一轮只看整体风格，文字和细节还没精修，选定后再统一打磨。页面里的 AI 回答、报告和引文都是示例，品牌均为虚构。</p>
+    <p>动效是用代码实时渲染的，在较旧的手机上可能不够流畅。</p>
+  </footer>
+</div>
+
+<div class="viewer" id="viewer" hidden>
+  <div class="viewer-bar">
+    <button class="nav-btn" type="button" id="prev" aria-label="上一套">←</button>
+    <b id="viewer-name"></b>
+    <button class="nav-btn" type="button" id="next" aria-label="下一套">→</button>
+    <span class="sp"></span>
+    <a class="hide-s" id="viewer-tab" href="#" target="_blank" rel="noopener">新标签页打开</a>
+    <button type="button" id="close">返回对比</button>
+  </div>
+  <iframe id="frame" title="风格完整页面" allow="fullscreen"></iframe>
+</div>
+
+<script>
+  const buttons = [...document.querySelectorAll('[data-open]')];
+  const viewer = document.getElementById('viewer'), frame = document.getElementById('frame');
+  const nameEl = document.getElementById('viewer-name'), tab = document.getElementById('viewer-tab');
+  let current = 0;
+  function show(i) {
+    current = (i + buttons.length) % buttons.length;
+    const b = buttons[current];
+    frame.src = b.dataset.open + '/index.html';
+    tab.href = b.dataset.open + '/index.html';
+    nameEl.textContent = b.dataset.name;
+    viewer.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function hide() { viewer.hidden = true; frame.src = 'about:blank'; document.body.style.overflow = ''; buttons[current].focus(); }
+  buttons.forEach((b, i) => b.addEventListener('click', () => show(i)));
+  document.getElementById('close').addEventListener('click', hide);
+  document.getElementById('prev').addEventListener('click', () => show(current - 1));
+  document.getElementById('next').addEventListener('click', () => show(current + 1));
+  addEventListener('keydown', e => { if (!viewer.hidden && e.key === 'Escape') hide(); });
+</script>
+
+</body>
+</html>
